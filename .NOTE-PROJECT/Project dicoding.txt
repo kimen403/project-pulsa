@@ -1,0 +1,72 @@
+LINK : https://www.dicoding.com/academies/276/tutorials/19227?from=19222
+
+{ Fitur: Registrasi Pengguna
+    
+ Sebagai seorang pengguna, saya ingin mendaftarkan diri sebagai entitas untuk proses autentikasi.
+ 
+ Payload:
+ - username (string)
+ - password (string)
+ - fullname (string)
+ 
+ Spesifikasi:
+ - Ketika mendaftar tanpa memberikan entitas yang dibutuhkan:
+   - maka error
+ - Ketika mendaftar dengan memberikan entitas yang tipe datanya tidak sesuai: 
+   - maka error
+ - Ketika mendaftar dengan username lebih dari 50 karakter:
+   - maka error
+ - Ketika mendaftar dengan username yang mengandung karakter terlarang:
+   - maka error 
+ - Ketika mendaftar dengan username yang sudah digunakan:
+   - maka error
+ - Ketika mendaftar dengan payload yang benar
+   - maka user baru harus terbuat
+ 
+ Catatan sisi sistem:
+ - Enkripsi password user
+ - Simpan user baru pada database
+ - Kembalikan permintaan pengguna dengan nilai user yang dimasukkan
+}
+{ Fitur: Registrasi Menambahkan Thread
+    
+ Sebagai seorang pengguna, saya ingin menambahkan theread untuk saya sendiri.
+ 
+ Payload:
+ - title (string)
+ - body (string)
+ 
+ {
+    "title": string,
+    "body": string
+ }
+
+ Response: 201
+    {
+    "status": "success",
+    "data": {
+        "addedThread": {
+            "id": "thread-h_W1Plfpj0TY7wyT2PUPX",
+            "title": "sebuah thread",
+            "owner": "user-DWrT3pXe1hccYkV1eIAxS"
+                }
+         }
+    }
+
+ 
+ Spesifikasi:
+ - Ketika menambakan tanpa memberikan entitas yang dibutuhkan:
+   - maka error 400
+ - Ketika menambahkan dengan memberikan entitas yang tipe datanya tidak sesuai: 
+   - maka error 400
+ - Ketika menambahkan belum login (tanpa akses token):
+   - maka error 403
+ - Ketika menambahkan title dengan  lebih dari 50 karakter:
+   - maka error 400
+ - Ketika mendaftar dengan payload yang benar
+   - maka theread baru dibuat
+ 
+ Catatan sisi sistem:
+ - Menambahkan thread merupakan resource yang dibatasi (restrict). Untuk mengaksesnya membutuhkan access token guna mengetahui siapa yang membuat thread.
+ - Simpan Thread baru pada database
+}
