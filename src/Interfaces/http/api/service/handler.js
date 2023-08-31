@@ -27,7 +27,7 @@ class ServicesHandler {
     }
 
     async postTopupHandler(request, h) {
-        const usecasePayload = request.payload;
+        const usecasePayload = request.payload.data;
         console.log(usecasePayload);
         const addTopupUseCase = this._container.getInstance(TopUpUseCase.name);
 
