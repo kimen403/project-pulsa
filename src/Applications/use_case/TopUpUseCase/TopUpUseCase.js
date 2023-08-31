@@ -13,13 +13,15 @@ class TopUpUseCase {
   // Contoh : commentRepository, threadRepository di butuhkan untuk menambahkan commentUseCase
   constructor({ midtransRepository }) {
     this._midtransRepository = midtransRepository;
+
     // this._threadRepository= threadRepository;
   }
 
   async execute(useCasePayload) {
+    console.log('masuk usecase')
     const newTopup = new NewTopup(useCasePayload);
     // await this._threadRepository.verifyAvailableThread(newComment.threadId);
-    const orderId = 'order-3'
+    const orderId = `order-${this._midtransRepository._idGenerator(4)}`;
     const response = await this._midtransRepository.createPayment(newTopup.jumlah, orderId);
 
     // const addedComment = await this._commentRepository.addComment(newComment);

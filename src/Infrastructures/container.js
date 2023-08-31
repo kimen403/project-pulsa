@@ -58,6 +58,7 @@ const container = createContainer();
 
 // registering services and repository
 container.register([
+
   {
     key: MidtransRepository.name,
     Class: MidtransRepositoryServer,

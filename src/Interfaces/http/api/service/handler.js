@@ -19,12 +19,18 @@ class ServicesHandler {
     async postPayHandler(request, h) {
         const usecasePayload = request.payload;
         console.log(usecasePayload);
+        const response = h.response({
+            status: "success",
+        });
+        response.code(200);
+        return response;
     }
+
     async postTopupHandler(request, h) {
         const usecasePayload = request.payload;
 
         const addTopupUseCase = this._container.getInstance(TopUpUseCase.name);
-        console.log('masuk')
+        console.log(addTopupUseCase)
         const topup = await addTopupUseCase.execute(usecasePayload);
 
         const response = h.response(
