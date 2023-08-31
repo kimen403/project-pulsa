@@ -7,7 +7,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
-
+const midtransCli = require('./midtrans/client');
 // service (repository, helper, manager, etc)
 const PasswordHash = require('../Applications/security/PasswordHash');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
@@ -69,6 +69,9 @@ container.register([
         },
         {
           concrete: nanoid,
+        },
+        {
+          concrete: midtransCli,
         },
       ],
     },

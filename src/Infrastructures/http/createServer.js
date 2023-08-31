@@ -68,14 +68,14 @@ const createServer = async (container) => {
       plugin: authentications,
       options: { container },
     },
-    {
-      plugin: threads,
-      options: { container },
-    },
-    {
-      plugin: comments,
-      options: { container },
-    },
+    // {
+    //   plugin: threads,
+    //   options: { container },
+    // },
+    // {
+    //   plugin: comments,
+    //   options: { container },
+    // },
     {
       plugin: service,
       options: { container },

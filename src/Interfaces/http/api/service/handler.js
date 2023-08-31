@@ -30,7 +30,7 @@ class ServicesHandler {
         const usecasePayload = request.payload;
 
         const addTopupUseCase = this._container.getInstance(TopUpUseCase.name);
-        console.log(addTopupUseCase)
+
         const topup = await addTopupUseCase.execute(usecasePayload);
 
         const response = h.response(
@@ -44,15 +44,13 @@ class ServicesHandler {
     async postPriceListHandler(request, h) {
         const getProducts = this._container.getInstance(GetProductsUseCase.name);
         const res = await getProducts.execute();
-        console.log('masuk');
-
         const response = h.response({
             status: "success",
             data: {
                 res
             },
         });
-        response.code(201);
+        response.code(200);
         return response;
     }
     // async deleteCommentHandler(request, h) {
