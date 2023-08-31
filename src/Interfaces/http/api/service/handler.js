@@ -11,10 +11,15 @@ class ServicesHandler {
         this._container = container;
         this.postPriceListHandler = this.postPriceListHandler.bind(this);
         this.postTopupHandler = this.postTopupHandler.bind(this);
+        this.postPayHandler = this.postPayHandler.bind(this);
 
         // this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
     }
 
+    async postPayHandler(request, h) {
+        const usecasePayload = request.payload;
+        console.log(usecasePayload);
+    }
     async postTopupHandler(request, h) {
         const usecasePayload = request.payload;
 

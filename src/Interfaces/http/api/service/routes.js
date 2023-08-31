@@ -9,8 +9,14 @@ const routes = (handler) => [
         method: 'POST',
         path: '/topup',
         handler: handler.postTopupHandler,
-
     },
+    {
+        method: 'POST',
+        path: '/pay',
+        handler: handler.postPayHandler,
+    },
+
+
     // {
     //     method: 'DELETE',
     //     path: '/threads/{threadId}/comments/{commentId}',
