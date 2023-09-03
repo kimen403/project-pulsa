@@ -34,6 +34,8 @@ const MidtransRepositoryServer = require('./repository/MidtransRepositoryServer'
 const ProductsRepository = require('../Domains/products/ProductsRepository');
 const ProductsRepositoryPostgres = require('./repository/ProductsRepositoryPostgres');
 
+const DigiRepositoryServer = require('./services/ServerDigiRepository');
+const Digirepository = require('../Applications/services/DigiRepository');
 // use case
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
@@ -50,9 +52,9 @@ const GetDetailThreadByIdUseCase = require('../Applications/use_case/ThreadUseCa
 const AddCommentUseCase = require('../Applications/use_case/CommentUseCase/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/CommentUseCase/DeleteCommentUseCase');
 
-// Services
-const GetProducts = require('../Applications/services/ListProducts');
-const GetProductsServer = require('./services/ListProductsServer');
+// Services Digi
+const GetProductsServer = require('./services/ServerDigiRepository');
+
 const TopUpUseCase = require('../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
 // GetProductsServer
@@ -69,6 +71,9 @@ const GetProductsByProviderUseCase = require('../Applications/use_case/ProductsU
 const GetAllProvidersByCategoryUseCase = require('../Applications/use_case/ProductsUseCase/GetAllProvidersByCategory');
 const GetAllCategoriesUseCase = require('../Applications/use_case/ProductsUseCase/GetAllCategories');
 const GetAllProductsUseCase = require('../Applications/use_case/ProductsUseCase/GetAllProducts');
+
+// ServerAdminUseCase
+const UploadBannerUseCase = require('../Applications/use_case/ServerAdminUseCase/UploadBannerUseCase');
 
 // creating container
 const container = createContainer();
@@ -121,8 +126,8 @@ container.register([
   },
   // userRepository
   {
-    key: GetProducts.name,
-    Class: GetProductsServer,
+    key: Digirepository.name,
+    Class: DigiRepositoryServer,
     parameter: {
       dependencies: [
         {
@@ -215,6 +220,21 @@ container.register([
 
 // registering use cases
 container.register([
+
+  // ServerAdminUseCase
+  {
+    key: UploadBannerUseCase.name,
+    Class: UploadBannerUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
+        },
+      ],
+    },
+  },
   // productsUseCase
   {
     key: GetAllProductsUseCase.name,
@@ -299,19 +319,7 @@ container.register([
   },
 
   // addUserUseCase
-  {
-    key: GetProductsUseCase.name,
-    Class: GetProductsUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'getProduct',
-          internal: GetProducts.name,
-        },
-      ],
-    },
-  },
+
   {
     key: AddUserUseCase.name,
     Class: AddUserUseCase,

@@ -1,7 +1,9 @@
+const UploadUseCase = require('../../../../Applications/services/UploadUseCase');
 const GetAllCategoriesUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetAllCategories');
 const GetAllProductsUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetAllProducts');
 const GetAllProvidersByCategoryUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetAllProvidersByCategory');
 const GetProductsByProviderUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetProductsByProvider');
+const UploadBannerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UploadBannerUseCase');
 
 class ProductsHandler {
   constructor(container) {
@@ -12,6 +14,8 @@ class ProductsHandler {
     this.getAllCategoriesHandler = this.getAllCategoriesHandler.bind(this);
     this.getAllProvidersByCategoryHandler = this.getAllProvidersByCategoryHandler.bind(this);
     this.getAllProductsByProviderHandler = this.getAllProductsByProviderHandler.bind(this);
+    this.getBannerHandler = this.getBannerHandler.bind(this);
+    this.postBannerHandler = this.postBannerHandler.bind(this);
   }
 
   async getAllProductsHandler(request, h) {
@@ -65,6 +69,40 @@ class ProductsHandler {
     response.code(200);
     return response;
   }
+
+  async getBannerHandler(request, h) {
+    const getAllProductsUseCase = this._container.getInstance(
+      GetAllProductsUseCase.name,
+    );
+    const banner = await getAllProductsUseCase.execute();
+    const response = h.response({
+      status: 'success',
+      banner,
+    });
+    response.code(200);
+    return response;
+  }
+
+  async postBannerHandler(request, h) {
+    const { desc } = request.payload;
+    const uploadUserUseCase = this._container.getInstance(
+      UploadUseCase.name,
+    );
+    const uploadBannerUseCase = this._container.getInstance(
+      UploadBannerUseCase.name,
+    );
+
+    const { image } = request.payload;
+    const url = await uploadUserUseCase.execute(image);
+    const banner = await uploadBannerUseCase.execute(url, desc);
+    const response = h.response({
+      status: 'success',
+      banner,
+    });
+    response.code(201);
+    return response;
+  }
+
   // async postCommentHandler(request, h) {
   //     const usecasePayload = {
   //         content: request.payload.content,

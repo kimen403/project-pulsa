@@ -19,6 +19,23 @@ const routes = (handler) => [
     path: '/providers/{providerId}/products',
     handler: handler.getAllProductsByProviderHandler,
   },
+  {
+    method: 'GET',
+    path: '/banner',
+    handler: handler.getBannerHandler,
+  },
+  {
+    method: 'POST',
+    path: '/banner',
+    handler: handler.postBannerHandler,
+    options: {
+      payload: {
+        allow: 'multipart/form-data',
+        multipart: true,
+        output: 'stream',
+      },
+    },
+  },
 
   // {
   //     method: 'DELETE',
