@@ -21,12 +21,12 @@ class GetProductsByProviderUseCase {
     // const addedComment = await this._commentRepository.addComment(newComment);
     // // console.log('newComment', newComment.threadId)
     // return new AddedComment(addedComment);
-    console.log('masuk usecase get products by provider');
+    // console.log('masuk usecase get products by provider');
     const products = await this._productsRepository.getAllProductsByProvider(idProvider);
-    console.log('products', products);
-    console.log('ini products data');
+    // console.log('products', products);
+    // console.log('ini products data');
     const productsData = products.map((product) => new Product(product));
-    console.log('productsData', productsData);
+    // console.log('productsData', productsData);
     return productsData;
   }
 }

@@ -16,7 +16,7 @@ class TopUpUseCase {
   }
 
   async execute(id, nominal) {
-    console.log('masuk usecase');
+    // console.log('masuk usecase');
     const newTopup = new NewTopup({ id, nominal });
     // await this._threadRepository.verifyAvailableThread(newComment.threadId);
     const orderId = `order-${this._midtransRepository._idGenerator(4)}`;

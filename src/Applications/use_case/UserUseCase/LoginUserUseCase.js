@@ -33,7 +33,7 @@ class LoginUserUseCase {
     const newAuthentication = new NewAuthentication({
       accessToken, refreshToken, role, saldoString,
     });
-    console.log('newAuthentication');
+    // console.log('newAuthentication');
 
     await this._authenticationRepository.addToken(newAuthentication.refreshToken);
 

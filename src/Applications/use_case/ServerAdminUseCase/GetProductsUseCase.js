@@ -7,14 +7,14 @@ class GetProductsUseCase {
   // constructor akan menerima parameter yang dikirimkan oleh dependency injection
   // Parameter adalah kumpulan fungsi yang dibutuhkan oleh use case
   // Contoh : commentRepository, threadRepository di butuhkan untuk menambahkan commentUseCase
-  constructor({ getProduct }) {
-    this._getProduct = getProduct;
+  constructor({ digiRepository }) {
+    this._digiRepository = digiRepository;
     // this._threadRepository= threadRepository;
   }
 
   async execute() {
-    console.log('masuk usecase');
-    const products = await this._getProduct.getProducts();
+    const products = await this._digiRepository.getProducts();
+    // console.log('masuk usecase');
     // const newComment = new NewComment(useCasePayload);
     // await this._threadRepository.verifyAvailableThread(newComment.threadId);
     console.log(products.data.data);

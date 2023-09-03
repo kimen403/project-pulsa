@@ -36,7 +36,7 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async addUser(registerUser) {
-    console.log('masuk Repository USer');
+    // console.log('masuk Repository USer');
     const {
       username, fullname, noWa, email, password, pinKeamanan, kodeReferal,
     } = registerUser;
@@ -67,7 +67,7 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async getIdRoleSaldoByUsername(username) {
-    console.log('masuk get id role saldo by username');
+    // console.log('masuk get id role saldo by username');
     const query = {
       text: 'SELECT id_user AS id,role,saldo FROM users WHERE username = $1',
       values: [username],
@@ -80,7 +80,7 @@ class UserRepositoryPostgres extends UserRepository {
     }
 
     const result = result2.rows[0];
-    console.log(result);
+    // console.log(result);
     return result;
   }
 }

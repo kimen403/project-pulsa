@@ -1,9 +1,8 @@
 const routes = (handler) => [
   {
     method: 'GET',
-    path: '/price-list',
-    handler: handler.postPriceListHandler,
-
+    path: '/update/products',
+    handler: handler.getUpdateProductsHandler,
   },
   {
     method: 'POST',

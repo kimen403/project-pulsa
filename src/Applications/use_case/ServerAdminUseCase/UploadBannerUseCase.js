@@ -13,10 +13,10 @@ class UploadBannerUseCase {
   }
 
   async execute(urlProduct, description) {
-    console.log('uploadBannerUseCase', urlProduct, description);
+    // console.log('uploadBannerUseCase', urlProduct, description);
     // const newComment = new NewComment(useCasePayload);
     // await this._threadRepository.verifyAvailableThread(newComment.threadId);
-    console.log(this._productRepository);
+    // console.log(this._productRepository);
     const newBanner = await this._productRepository.addBanner(urlProduct, description);
     // const addedComment = await this._commentRepository.addComment(newComment);
     // // console.log('newComment', newComment.threadId)

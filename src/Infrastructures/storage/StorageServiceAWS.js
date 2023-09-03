@@ -22,11 +22,11 @@ class StorageServiceAWS extends StorageService {
 
       const command = new PutObjectCommand(parameters);
       const response = await s3Client.send(command);
-      console.log(response);
+      // console.log(response);
 
       return Location;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       throw error;
     }
   }

@@ -58,7 +58,7 @@ const GetProductsServer = require('./services/ServerDigiRepository');
 const TopUpUseCase = require('../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
 // GetProductsServer
-const GetProductsUseCase = require('../Applications/use_case/Get_ProductsUseCase/GetProductsUseCase');
+const GetProductsUseCase = require('../Applications/use_case/ServerAdminUseCase/GetProductsUseCase');
 const GetBannerUseCase = require('../Applications/use_case/ProductsUseCase/GetBannerUseCase');
 // Upload
 const UploadUseCase = require('../Applications/services/UploadUseCase');
@@ -220,7 +220,19 @@ container.register([
 
 // registering use cases
 container.register([
-
+  {
+    key: GetProductsUseCase.name,
+    Class: GetProductsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'digiRepository',
+          internal: Digirepository.name,
+        },
+      ],
+    },
+  },
   // ServerAdminUseCase
   {
     key: UploadBannerUseCase.name,

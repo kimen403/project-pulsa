@@ -1,5 +1,5 @@
 const UploadUseCase = require('../../../../Applications/services/UploadUseCase');
-const GetProductsUseCase = require('../../../../Applications/use_case/Get_ProductsUseCase/GetProductsUseCase');
+const GetProductsUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/GetProductsUseCase');
 const TopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
 class ServicesHandler {
@@ -9,15 +9,30 @@ class ServicesHandler {
     this.postTopupHandler = this.postTopupHandler.bind(this);
     this.postPayHandler = this.postPayHandler.bind(this);
     this.postUploadHandler = this.postUploadHandler.bind(this);
+    this.getUpdateProductsHandler = this.getUpdateProductsHandler.bind(this);
 
     // this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
+  }
+
+  async getUpdateProductsHandler(request, h) {
+    // console.log('masuk');
+    const getProducts = this._container.getInstance(GetProductsUseCase.name);
+    const res = await getProducts.execute();
+    const response = h.response({
+      status: 'success',
+      data: {
+        res,
+      },
+    });
+    response.code(200);
+    return response;
   }
 
   async postUploadHandler(request, h) {
     const usecasePayload = request.payload.data;
     // console.log(usecasePayload);
     const uploadUseCase = this._container.getInstance(UploadUseCase.name);
-    console.log('masuk');
+    // console.log('masuk');
 
     const fileLocation = await uploadUseCase.execute(usecasePayload);
 
@@ -33,7 +48,7 @@ class ServicesHandler {
 
   async postPayHandler(request, h) {
     const usecasePayload = request.payload;
-    console.log(usecasePayload);
+    // console.log(usecasePayload);
     const response = h.response({
       status: 'success',
     });
@@ -44,7 +59,7 @@ class ServicesHandler {
   async postTopupHandler(request, h) {
     const { id } = request.auth.credentials;
     const { nominal } = request.payload;
-    console.log(id);
+    // console.log(id);
     const addTopupUseCase = this._container.getInstance(TopUpUseCase.name);
 
     const topup = await addTopupUseCase.execute(id, nominal);

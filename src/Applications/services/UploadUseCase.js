@@ -16,10 +16,10 @@ class UploadUseCase {
   }
 
   async execute(useCasePayload) {
-    console.log('masuk ke usecase');
+    // console.log('masuk ke usecase');
     await validateImageHeaders(useCasePayload.hapi.headers);
     const fileLocation = await this._storageService.writeFile(useCasePayload, useCasePayload.hapi);
-    console.log(fileLocation);
+    // console.log(fileLocation);
     return fileLocation;
   }
 }

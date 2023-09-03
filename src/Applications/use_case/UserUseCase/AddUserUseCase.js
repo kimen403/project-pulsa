@@ -7,8 +7,8 @@ class AddUserUseCase {
   }
 
   async execute(useCasePayload) {
-    console.log('masuk usecase');
-    console.log(useCasePayload);
+    // console.log('masuk usecase');
+    // console.log(useCasePayload);
     const registerUser = new RegisterUser(useCasePayload);
     await this._userRepository.verifyAvailableUsername(registerUser.username);
     await this._userRepository.verifyAvailableEmail(registerUser.email);

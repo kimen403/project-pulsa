@@ -86,7 +86,7 @@ class ProductsHandler {
 
   async postBannerHandler(request, h) {
     const { desc } = request.payload;
-    console.log(desc);
+    // console.log(desc);
     const uploadUserUseCase = this._container.getInstance(
       UploadUseCase.name,
     );
@@ -96,7 +96,7 @@ class ProductsHandler {
 
     const { image } = request.payload;
     const url = await uploadUserUseCase.execute(image);
-    console.log(url);
+    // console.log(url);
     const banner = await uploadBannerUseCase.execute(url, desc);
     const response = h.response({
       status: 'success',
