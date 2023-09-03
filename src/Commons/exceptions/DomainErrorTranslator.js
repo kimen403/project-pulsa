@@ -7,13 +7,21 @@ const DomainErrorTranslator = {
 };
 
 DomainErrorTranslator._directories = {
+
+  'PRODUCTS.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+    'tidak dapat membuat product baru karena properti yang dibutuhkan tidak ada',
+  ),
+  'PRODUCTS.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'tidak dapat membuat product baru karena tipe data tidak sesuai',
+  ),
+
   'NEW_TOPUP.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
     'tidak dapat membuat topup baru karena properti yang dibutuhkan tidak ada',
   ),
   'NEW_TOPUP.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
     'tidak dapat membuat topup baru karena tipe data tidak sesuai',
   ),
-  
+
   'NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
     'tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada',
   ),
@@ -68,7 +76,7 @@ DomainErrorTranslator._directories = {
   'REGISTER_USER.NO_WA_ALREADY_EXISTS': new InvariantError(
     'tidak dapat membuat user baru karena no wa sudah digunakan',
   ),
- 
+
   'USER_LOGIN.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
     'harus mengirimkan username dan password',
   ),

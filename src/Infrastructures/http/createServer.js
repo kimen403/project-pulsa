@@ -7,9 +7,8 @@ const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTrans
 
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
-const threads = require('../../Interfaces/http/api/threads');
-const comments = require('../../Interfaces/http/api/comments');
 const service = require('../../Interfaces/http/api/service');
+const products = require('../../Interfaces/http/api/products');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -38,7 +37,7 @@ const createServer = async (container) => {
     method: 'GET',
     path: '/',
     handler: () => ({
-      value: 'Forim API Berhasil dijalankan',
+      value: 'Selamat datang di API topup ',
     }),
   });
 
@@ -68,6 +67,10 @@ const createServer = async (container) => {
       plugin: authentications,
       options: { container },
     },
+    {
+      plugin: products,
+      options: { container },
+    },
     // {
     //   plugin: threads,
     //   options: { container },
@@ -79,8 +82,7 @@ const createServer = async (container) => {
     {
       plugin: service,
       options: { container },
-    }
-
+    },
 
   ]);
 

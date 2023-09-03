@@ -3,20 +3,18 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable('saldo', {
-    id_user: {
+  pgm.createTable('category', {
+    id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
-      notNull: true,
     },
-    saldo: {
-      type: 'NUMERIC',
+    category: {
+      type: 'VARCHAR(50)',
       notNull: true,
-      default: 0,
     },
   });
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('saldo');
+  pgm.dropTable('category');
 };

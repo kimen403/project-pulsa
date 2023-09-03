@@ -6,41 +6,47 @@ const { createContainer } = require('instances-container');
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
+const { S3Client } = require('@aws-sdk/client-s3');
+
 const pool = require('./database/postgres/pool');
 const midtransCli = require('./midtrans/client');
 // service (repository, helper, manager, etc)
 const PasswordHash = require('../Applications/security/PasswordHash');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
-//authenticationRepository
+// authenticationRepository
 const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
-//userRepository
+// userRepository
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
-//commentRepository
+// commentRepository
 const CommentRepository = require('./repository/CommentRepositoryPostgres');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
-//threadRepository
+// threadRepository
 const ThreadRepository = require('./repository/ThreadRespositoryPostgres');
 const ThreadRepositoryPostgres = require('./repository/ThreadRespositoryPostgres');
 
-//midtransRepository
+// midtransRepository
 const MidtransRepository = require('../Domains/midtrans/MidtransRepository');
 const MidtransRepositoryServer = require('./repository/MidtransRepositoryServer');
+
+// productRepository
+const ProductsRepository = require('../Domains/products/ProductsRepository');
+const ProductsRepositoryPostgres = require('./repository/ProductsRepositoryPostgres');
 
 // use case
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/Auth_UseCase/RefreshAuthenticationUseCase');
-//userUseCase
+// userUseCase
 const AddUserUseCase = require('../Applications/use_case/UserUseCase/AddUserUseCase');
 const LoginUserUseCase = require('../Applications/use_case/UserUseCase/LoginUserUseCase');
 const LogoutUserUseCase = require('../Applications/use_case/UserUseCase/LogoutUserUseCase');
-//threadUseCase
+// threadUseCase
 const AddThreadUseCase = require('../Applications/use_case/ThreadUseCase/AddThreadUseCase');
 const GetDetailThreadByIdUseCase = require('../Applications/use_case/ThreadUseCase/GetDetailThreadByIdUseCase');
 
-//commentUseCase
+// commentUseCase
 const AddCommentUseCase = require('../Applications/use_case/CommentUseCase/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/CommentUseCase/DeleteCommentUseCase');
 
@@ -49,16 +55,53 @@ const GetProducts = require('../Applications/services/ListProducts');
 const GetProductsServer = require('./services/ListProductsServer');
 const TopUpUseCase = require('../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
-
 // GetProductsServer
 const GetProductsUseCase = require('../Applications/use_case/Get_ProductsUseCase/GetProductsUseCase');
+
+// Upload
+const UploadUseCase = require('../Applications/services/UploadUseCase');
+
+const StorageServiceAWS = require('./storage/StorageServiceAWS');
+const StorageService = require('../Domains/storage/StorageService');
+
+// ProductsUseCase
+const GetProductsByProviderUseCase = require('../Applications/use_case/ProductsUseCase/GetProductsByProvider');
+const GetAllProvidersByCategoryUseCase = require('../Applications/use_case/ProductsUseCase/GetAllProvidersByCategory');
+const GetAllCategoriesUseCase = require('../Applications/use_case/ProductsUseCase/GetAllCategories');
+const GetAllProductsUseCase = require('../Applications/use_case/ProductsUseCase/GetAllProducts');
 
 // creating container
 const container = createContainer();
 
 // registering services and repository
 container.register([
-
+  // storageService
+  {
+    key: StorageService.name,
+    Class: StorageServiceAWS,
+    parameter: {
+      dependencies: [
+        {
+          concrete: S3Client,
+        },
+      ],
+    },
+  },
+  // productsRepository
+  {
+    key: ProductsRepository.name,
+    Class: ProductsRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
   {
     key: MidtransRepository.name,
     Class: MidtransRepositoryServer,
@@ -76,7 +119,7 @@ container.register([
       ],
     },
   },
-  //userRepository
+  // userRepository
   {
     key: GetProducts.name,
     Class: GetProductsServer,
@@ -102,7 +145,7 @@ container.register([
       ],
     },
   },
-  //authenticationRepository
+  // authenticationRepository
   {
     key: AuthenticationRepository.name,
     Class: AuthenticationRepositoryPostgres,
@@ -114,7 +157,7 @@ container.register([
       ],
     },
   },
-  //passwordHash
+  // passwordHash
   {
     key: PasswordHash.name,
     Class: BcryptPasswordHash,
@@ -126,7 +169,7 @@ container.register([
       ],
     },
   },
-  //authenticationTokenManager
+  // authenticationTokenManager
   {
     key: AuthenticationTokenManager.name,
     Class: JwtTokenManager,
@@ -138,7 +181,7 @@ container.register([
       ],
     },
   },
-  //threadRepository
+  // threadRepository
   {
     key: ThreadRepository.name,
     Class: ThreadRepositoryPostgres,
@@ -153,7 +196,7 @@ container.register([
       ],
     },
   },
-  //commentRepository
+  // commentRepository
   {
     key: CommentRepository.name,
     Class: CommentRepositoryPostgres,
@@ -170,10 +213,77 @@ container.register([
   },
 ]);
 
-
 // registering use cases
 container.register([
-  //topupUseCase
+  // productsUseCase
+  {
+    key: GetAllProductsUseCase.name,
+    Class: GetAllProductsUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetAllCategoriesUseCase.name,
+    Class: GetAllCategoriesUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetAllProvidersByCategoryUseCase.name,
+    Class: GetAllProvidersByCategoryUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetProductsByProviderUseCase.name,
+    Class: GetProductsByProviderUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
+        },
+      ],
+    },
+  },
+
+  // uploadUseCase
+  {
+    key: UploadUseCase.name,
+    Class: UploadUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'storageService',
+          internal: StorageService.name,
+        },
+      ],
+    },
+  },
+  // topupUseCase
   {
     key: TopUpUseCase.name,
     Class: TopUpUseCase,
@@ -188,7 +298,7 @@ container.register([
     },
   },
 
-  //addUserUseCase
+  // addUserUseCase
   {
     key: GetProductsUseCase.name,
     Class: GetProductsUseCase,
@@ -219,7 +329,7 @@ container.register([
       ],
     },
   },
-  //loginUserUseCase
+  // loginUserUseCase
   {
     key: LoginUserUseCase.name,
     Class: LoginUserUseCase,
@@ -245,7 +355,7 @@ container.register([
       ],
     },
   },
-  //logoutUserUseCase
+  // logoutUserUseCase
   {
     key: LogoutUserUseCase.name,
     Class: LogoutUserUseCase,
@@ -259,7 +369,7 @@ container.register([
       ],
     },
   },
-  //refreshAuthenticationUseCase
+  // refreshAuthenticationUseCase
   {
     key: RefreshAuthenticationUseCase.name,
     Class: RefreshAuthenticationUseCase,
@@ -277,7 +387,7 @@ container.register([
       ],
     },
   },
-  //addThreadUseCase
+  // addThreadUseCase
   {
     key: AddThreadUseCase.name,
     Class: AddThreadUseCase,
@@ -291,7 +401,7 @@ container.register([
       ],
     },
   },
-  //getThreadUseCase
+  // getThreadUseCase
   {
     key: GetDetailThreadByIdUseCase.name,
     Class: GetDetailThreadByIdUseCase,
@@ -309,7 +419,7 @@ container.register([
       ],
     },
   },
-  //addCommentUseCase
+  // addCommentUseCase
   {
     key: AddCommentUseCase.name,
     Class: AddCommentUseCase,
@@ -323,11 +433,11 @@ container.register([
         {
           name: 'threadRepository',
           internal: ThreadRepository.name,
-        }
+        },
       ],
     },
   },
-  //deleteCommentUseCase
+  // deleteCommentUseCase
   {
     key: DeleteCommentUseCase.name,
     Class: DeleteCommentUseCase,
