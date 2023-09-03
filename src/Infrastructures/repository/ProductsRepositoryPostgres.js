@@ -54,7 +54,7 @@ class ProductsRepositoryPostgres extends ProductsRepository {
   async addBanner(url, description) {
     const id = `banner-${this._idGenerator(5)}`;
     const query = {
-      text: 'INSERT INTO banner VALUES($1, $2) RETURNING id ,image_url',
+      text: 'INSERT INTO banner VALUES($1, $2,$3) RETURNING id ,image_url',
       values: [id, url, description],
     };
 

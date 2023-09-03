@@ -59,7 +59,7 @@ const TopUpUseCase = require('../Applications/use_case/TopUpUseCase/TopUpUseCase
 
 // GetProductsServer
 const GetProductsUseCase = require('../Applications/use_case/Get_ProductsUseCase/GetProductsUseCase');
-
+const GetBannerUseCase = require('../Applications/use_case/ProductsUseCase/GetBannerUseCase');
 // Upload
 const UploadUseCase = require('../Applications/services/UploadUseCase');
 
@@ -234,6 +234,20 @@ container.register([
         },
       ],
     },
+  },
+  {
+    key: GetBannerUseCase.name,
+    Class: GetBannerUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
+        },
+      ],
+    },
+
   },
   // productsUseCase
   {

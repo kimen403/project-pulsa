@@ -2,6 +2,7 @@ const UploadUseCase = require('../../../../Applications/services/UploadUseCase')
 const GetAllCategoriesUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetAllCategories');
 const GetAllProductsUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetAllProducts');
 const GetAllProvidersByCategoryUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetAllProvidersByCategory');
+const GetBannerUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetBannerUseCase');
 const GetProductsByProviderUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetProductsByProvider');
 const UploadBannerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UploadBannerUseCase');
 
@@ -71,10 +72,10 @@ class ProductsHandler {
   }
 
   async getBannerHandler(request, h) {
-    const getAllProductsUseCase = this._container.getInstance(
-      GetAllProductsUseCase.name,
+    const getBannerUseCase = this._container.getInstance(
+      GetBannerUseCase.name,
     );
-    const banner = await getAllProductsUseCase.execute();
+    const banner = await getBannerUseCase.execute();
     const response = h.response({
       status: 'success',
       banner,
@@ -85,6 +86,7 @@ class ProductsHandler {
 
   async postBannerHandler(request, h) {
     const { desc } = request.payload;
+    console.log(desc);
     const uploadUserUseCase = this._container.getInstance(
       UploadUseCase.name,
     );
@@ -94,6 +96,7 @@ class ProductsHandler {
 
     const { image } = request.payload;
     const url = await uploadUserUseCase.execute(image);
+    console.log(url);
     const banner = await uploadBannerUseCase.execute(url, desc);
     const response = h.response({
       status: 'success',
