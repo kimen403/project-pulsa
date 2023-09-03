@@ -42,11 +42,12 @@ class ServicesHandler {
   }
 
   async postTopupHandler(request, h) {
-    const usecasePayload = request.payload.data;
-    console.log(usecasePayload);
+    const { id } = request.auth.credentials;
+    const { nominal } = request.payload;
+    console.log(id);
     const addTopupUseCase = this._container.getInstance(TopUpUseCase.name);
 
-    const topup = await addTopupUseCase.execute(usecasePayload);
+    const topup = await addTopupUseCase.execute(id, nominal);
 
     const response = h.response(
       topup,

@@ -40,14 +40,14 @@ DomainErrorTranslator._directories = {
   'REGISTER_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
     'tidak dapat membuat user baru karena tipe data tidak sesuai',
   ),
+  'REGISTER_USER.USERNAME_CHAR': new InvariantError(
+    'tidak dapat membuat user baru karena karakter username kurang dari 5 karakter',
+  ),
   'REGISTER_USER.USERNAME_LIMIT_CHAR': new InvariantError(
     'tidak dapat membuat user baru karena karakter username melebihi batas limit',
   ),
   'REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER': new InvariantError(
     'tidak dapat membuat user baru karena username mengandung karakter terlarang',
-  ),
-  'REGISTER_USER.USERNAME_CHAR': new InvariantError(
-    'tidak dapat membuat user baru karena karakter username kurang dari 5 karakter',
   ),
   'REGISTER_USER.PASSWORD_LIMIT_CHAR': new InvariantError(
     'tidak dapat membuat user baru karena karakter password melebihi batas limit',
@@ -61,6 +61,7 @@ DomainErrorTranslator._directories = {
   'REGISTER_USER.NO_WA_CONTAIN_RESTRICTED_CHARACTER': new InvariantError(
     'tidak dapat membuat user baru karena no wa mengandung karakter terlarang',
   ),
+
   'REGISTER_USER.NO_WA_CHAR': new InvariantError(
     'tidak dapat membuat user baru karena karakter no wa kurang dari 10 karakter',
   ),

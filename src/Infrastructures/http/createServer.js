@@ -41,7 +41,7 @@ const createServer = async (container) => {
     }),
   });
 
-  server.auth.strategy('forumapi_jwt', 'jwt', {
+  server.auth.strategy('pulsa_jwt', 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
     verify: {
       aud: false,
@@ -53,7 +53,7 @@ const createServer = async (container) => {
       isValid: true,
       credentials: {
         id: artifacts.decoded.payload.id,
-        permissions: artifacts.decoded.payload.role,
+        role: artifacts.decoded.payload.role,
       },
     }),
   });

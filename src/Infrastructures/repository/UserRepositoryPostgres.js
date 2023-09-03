@@ -36,17 +36,19 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async addUser(registerUser) {
-    const { username, password, fullname } = registerUser;
-    const id = `user-${this._idGenerator()}`;
+    console.log('masuk Repository USer');
+    const {
+      username, fullname, noWa, email, password, pinKeamanan, kodeReferal,
+    } = registerUser;
+    const id = `user-${this._idGenerator(15)}`;
+    const role = 'USER';
 
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id, username, fullname',
-      values: [id, username, password, fullname],
+      text: 'INSERT INTO users VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id_user AS id, username, fullname',
+      values: [id, fullname, username, noWa, email, password, pinKeamanan, kodeReferal, role],
     };
-
     const result = await this._pool.query(query);
-
-    return new RegisteredUser({ ...result.rows[0] });
+    return new RegisteredUser(result.rows[0]);
   }
 
   async getPasswordByUsername(username) {
@@ -64,21 +66,22 @@ class UserRepositoryPostgres extends UserRepository {
     return result.rows[0].password;
   }
 
-  async getIdByUsername(username) {
+  async getIdRoleSaldoByUsername(username) {
+    console.log('masuk get id role saldo by username');
     const query = {
-      text: 'SELECT id FROM users WHERE username = $1',
+      text: 'SELECT id_user AS id,role,saldo FROM users WHERE username = $1',
       values: [username],
     };
 
-    const result = await this._pool.query(query);
+    const result2 = await this._pool.query(query);
 
-    if (!result.rowCount) {
+    if (!result2.rowCount) {
       throw new InvariantError('user tidak ditemukan');
     }
 
-    const { id } = result.rows[0];
-
-    return id;
+    const result = result2.rows[0];
+    console.log(result);
+    return result;
   }
 }
 

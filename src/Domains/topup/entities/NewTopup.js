@@ -1,33 +1,32 @@
 class NewTopup {
   constructor(payload) {
     this._verifyPayload(payload);
-    //Payload Yang Di Terima
+    // Payload Yang Di Terima
     const {
-      jumlah,
+      nominal,
     } = payload;
-    this.jumlah = jumlah;
+    this.nominal = nominal;
   }
 
   _verifyPayload(payload) {
     // Payload Yang Di Terima
     const {
-      jumlah,
+      nominal,
     } = payload;
 
     // veryfiy payload required
-    if (!jumlah) {
+    if (!nominal) {
       throw new Error('NEW_TOPUP.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
     // veryfiy payload data type
-    if (typeof jumlah !== 'number') {
+    if (typeof nominal !== 'number') {
       throw new Error('NEW_TOPUP.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
 
-    if (jumlah < 10000) {
+    if (nominal < 10000) {
       throw new Error('NEW_TOPUP.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
-
   }
 }
 

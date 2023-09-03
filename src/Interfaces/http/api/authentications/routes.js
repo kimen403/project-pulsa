@@ -1,7 +1,7 @@
 const routes = (handler) => ([
   {
     method: 'POST',
-    path: '/authentications',
+    path: '/login',
     handler: handler.postAuthenticationHandler,
   },
   {
@@ -11,8 +11,16 @@ const routes = (handler) => ([
   },
   {
     method: 'DELETE',
-    path: '/authentications',
+    path: '/logout',
     handler: handler.deleteAuthenticationHandler,
+    options: {
+      auth: 'pulsa_jwt',
+      plugins: {
+        hacli: {
+          permissions: ['USER'],
+        },
+      },
+    },
   },
 ]);
 
