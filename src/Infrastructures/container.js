@@ -60,6 +60,7 @@ const TopUpUseCase = require('../Applications/use_case/TopUpUseCase/TopUpUseCase
 // GetProductsServer
 const GetProductsUseCase = require('../Applications/use_case/ServerAdminUseCase/GetProductsUseCase');
 const GetBannerUseCase = require('../Applications/use_case/ProductsUseCase/GetBannerUseCase');
+const UpdateProductsServerUseCase = require('../Applications/use_case/ServerAdminUseCase/UpdateProductsServerUseCase');
 // Upload
 const UploadUseCase = require('../Applications/services/UploadUseCase');
 
@@ -481,6 +482,21 @@ container.register([
         {
           name: 'commentRepository',
           internal: CommentRepository.name,
+        },
+      ],
+    },
+  },
+
+  // updateProductsServerUseCase
+  {
+    key: UpdateProductsServerUseCase.name,
+    Class: UpdateProductsServerUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'productsRepository',
+          internal: ProductsRepository.name,
         },
       ],
     },

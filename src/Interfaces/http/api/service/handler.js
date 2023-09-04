@@ -1,5 +1,6 @@
 const UploadUseCase = require('../../../../Applications/services/UploadUseCase');
 const GetProductsUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/GetProductsUseCase');
+const UpdateProductsServerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UpdateProductsServerUseCase');
 const TopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
 class ServicesHandler {
@@ -15,14 +16,14 @@ class ServicesHandler {
   }
 
   async getUpdateProductsHandler(request, h) {
-    // console.log('masuk');
     const getProducts = this._container.getInstance(GetProductsUseCase.name);
-    const res = await getProducts.execute();
+    const updateProductsServer = this._container.getInstance(UpdateProductsServerUseCase.name);
+    const productsServer = await getProducts.execute();
+    // console.log('masuk', updateProductsServer);
+    const res = await updateProductsServer.execute(productsServer);
     const response = h.response({
       status: 'success',
-      data: {
-        res,
-      },
+      res,
     });
     response.code(200);
     return response;

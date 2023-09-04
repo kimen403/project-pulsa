@@ -17,7 +17,7 @@ class GetProductsUseCase {
     // console.log('masuk usecase');
     // const newComment = new NewComment(useCasePayload);
     // await this._threadRepository.verifyAvailableThread(newComment.threadId);
-    console.log(products.data.data);
+    // console.log(products.data.data);
     // const addedComment = await this._commentRepository.addComment(newComment);
     // // console.log('newComment', newComment.threadId)
     // return new AddedComment(addedComment);

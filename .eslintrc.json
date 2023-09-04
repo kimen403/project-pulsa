@@ -20,6 +20,7 @@
         "import/no-extraneous-dependencies": "off",
         "constructor-super": "off",
         "no-useless-constructor": "off",
-        "no-this-before-super": "off"
+        "no-this-before-super": "off",
+        "max-len": "off"
     }
 }
