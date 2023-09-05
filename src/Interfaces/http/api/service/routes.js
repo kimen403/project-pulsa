@@ -14,7 +14,7 @@ const routes = (handler) => [
   },
   {
     method: 'POST',
-    path: '/pay',
+    path: '/topup/confirm',
     handler: handler.postPayHandler,
   },
   {

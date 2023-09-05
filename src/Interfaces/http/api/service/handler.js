@@ -49,7 +49,8 @@ class ServicesHandler {
 
   async postPayHandler(request, h) {
     const usecasePayload = request.payload;
-    // console.log(usecasePayload);
+    console.log('payload dari callback:', usecasePayload);
+
     const response = h.response({
       status: 'success',
     });
