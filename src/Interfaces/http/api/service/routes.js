@@ -8,6 +8,9 @@ const routes = (handler) => [
     method: 'POST',
     path: '/topup',
     handler: handler.postTopupHandler,
+    options: {
+      auth: 'pulsa_jwt',
+    },
   },
   {
     method: 'POST',
