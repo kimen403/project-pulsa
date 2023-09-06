@@ -24,6 +24,14 @@ class DigiRepositoryServer
     // console.log(products);
     return products;
   }
+
+  async createTransaksi(newTransaksi) {
+    console.log({ ...newTransaksi });
+
+    const addedTransaksi = await axios.post('https://api.digiflazz.com/v1/transaction', { ...newTransaksi });
+    console.log(`berhasil${addedTransaksi}`);
+    return addedTransaksi;
+  }
 }
 
 module.exports = DigiRepositoryServer;

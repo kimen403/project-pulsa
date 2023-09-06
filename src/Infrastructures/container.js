@@ -7,6 +7,7 @@ const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const { S3Client } = require('@aws-sdk/client-s3');
+const crypto = require('crypto');
 
 const pool = require('./database/postgres/pool');
 const midtransCli = require('./midtrans/client');
@@ -75,13 +76,28 @@ const GetAllProductsUseCase = require('../Applications/use_case/ProductsUseCase/
 
 // ServerAdminUseCase
 const UploadBannerUseCase = require('../Applications/use_case/ServerAdminUseCase/UploadBannerUseCase');
+const HashMd = require('../Applications/security/Md5PasswordHash');
+const HashMdcrypto = require('../Applications/security/Md5PasswordHash');
 
+// TransaksiUseCase
+const PostNewTransaksiUseCase = require('../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
 // creating container
+// TransaksiRepository
+const TransaksiRepository = require('../Domains/transaksi/TransaksiRepository');
+const TransaksiRepositoryPostgres = require('./repository/TransaksiRepositoryPostgres');
+const HashMd5 = require('../Applications/security/Md5PasswordHash');
+const CryptoHashMd5 = require('./security/CryptoHashMd5');
+
 const container = createContainer();
 
 // registering services and repository
 container.register([
   // storageService
+
+  {
+    key: 'idGenerator',
+    Class: nanoid,
+  },
   {
     key: StorageService.name,
     Class: StorageServiceAWS,
@@ -97,6 +113,21 @@ container.register([
   {
     key: ProductsRepository.name,
     Class: ProductsRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+
+    key: TransaksiRepository.name,
+    Class: TransaksiRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -171,6 +202,17 @@ container.register([
       dependencies: [
         {
           concrete: bcrypt,
+        },
+      ],
+    },
+  },
+  {
+    key: HashMd5.name,
+    Class: CryptoHashMd5,
+    parameter: {
+      dependencies: [
+        {
+          concrete: crypto,
         },
       ],
     },
@@ -502,6 +544,37 @@ container.register([
     },
   },
 
+  // postNewTransaksiUseCase
+
+  {
+    key: PostNewTransaksiUseCase.name,
+    Class: PostNewTransaksiUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'transaksiRepository',
+          internal: TransaksiRepository.name,
+        },
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        // {
+        //   name: 'idGenerator',
+        //   internal: 'idGenerator',
+        // },
+        {
+          name: 'hashGenerator',
+          internal: HashMd5.name,
+        },
+        {
+          name: 'digiRepository',
+          internal: Digirepository.name,
+        },
+      ],
+    },
+  },
 ]);
 
 module.exports = container;

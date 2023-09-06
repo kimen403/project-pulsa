@@ -7,7 +7,18 @@ const DomainErrorTranslator = {
 };
 
 DomainErrorTranslator._directories = {
-
+  'POST_TRANSAKSI_DIGI.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+    'tidak dapat membuat transaksi baru karena properti yang dibutuhkan tidak ada',
+  ),
+  'POST_TRANSAKSI_DIGI.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'tidak dapat membuat transaksi baru karena tipe data tidak sesuai',
+  ),
+  'NEW_TRANSAKSI.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+    'tidak dapat membuat transaksi baru karena properti yang dibutuhkan tidak ada',
+  ),
+  'NEW_TRANSAKSI.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'tidak dapat membuat transaksi baru karena tipe data tidak sesuai',
+  ),
   'PRODUCTS.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
     'tidak dapat membuat product baru karena properti yang dibutuhkan tidak ada',
   ),

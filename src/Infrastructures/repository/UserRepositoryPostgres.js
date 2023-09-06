@@ -83,6 +83,52 @@ class UserRepositoryPostgres extends UserRepository {
     // console.log(result);
     return result;
   }
+
+  async cekSaldo(id, hargaJual) {
+    console.log('masuk cek saldo');
+    const query = {
+      text: 'SELECT saldo FROM users WHERE id_user = $1',
+      values: [id],
+    };
+
+    const result2 = await this._pool.query(query);
+
+    if (!result2.rowCount) {
+      throw new InvariantError('user tidak ditemukan');
+    }
+
+    const result = result2.rows[0];
+
+    if (result.saldo < hargaJual) {
+      throw new InvariantError('saldo tidak cukup');
+    }
+    // console.log(result);
+    return result;
+  }
+
+  async reudceSaldo(id, hargaJual) {
+    const query = {
+      text: 'UPDATE users SET saldo = saldo - $1 WHERE id_user = $2 RETURNING saldo',
+      values: [hargaJual, id],
+    };
+    try {
+      const result = await this._pool.query(query);
+      console.log('masuk reduce saldo');
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+    const result2 = await this._pool.query(query);
+    console.log('masuk reduce saldo');
+
+    if (!result2.rowCount) {
+      throw new InvariantError('user tidak ditemukan');
+    }
+
+    const result = result2.rows[0];
+    // console.log(result);
+    return result;
+  }
 }
 
 module.exports = UserRepositoryPostgres;

@@ -9,6 +9,7 @@ const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
 const service = require('../../Interfaces/http/api/service');
 const products = require('../../Interfaces/http/api/products');
+const transaksi = require('../../Interfaces/http/api/transaksi');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -69,6 +70,10 @@ const createServer = async (container) => {
     },
     {
       plugin: products,
+      options: { container },
+    },
+    {
+      plugin: transaksi,
       options: { container },
     },
     // {
