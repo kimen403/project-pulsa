@@ -20,3 +20,13 @@ function compareSHA512(hash1, hashObject2) {
 
 const isEqual = compareSHA512(hash, hashObject);
 console.log('Nilai hash sama:', isEqual);
+
+function testNominal(nominal) {
+  console.log('nominal', nominal);
+  const nomina = parseFloat(nominal).toFixed(2);
+  const nominal2 = +nomina;
+  console.log('masuk update balance', nominal2);
+  console.log(typeof nominal2);
+}
+
+testNominal('120000.00');

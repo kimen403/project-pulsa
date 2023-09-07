@@ -39,7 +39,6 @@ class CallBackUseCase {
           console.log('masuk capture');
           console.log('userId', userId);
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
-
           await this._userRepository.updateBalance(userId, useCasePayload.gross_amount);
           break;
         case 'pending':
@@ -47,7 +46,11 @@ class CallBackUseCase {
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'pending');
           break;
         case 'deny':
+          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'failed');
+          break;
         case 'expire':
+          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'failed');
+          break;
         case 'cancel':
           // Perform actions for `deny`, `expire`, and `cancel` cases
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'failed');
