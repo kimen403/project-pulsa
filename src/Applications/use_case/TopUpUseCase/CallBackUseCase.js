@@ -32,7 +32,7 @@ class CallBackUseCase {
           console.log('masuk settlement');
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
           // eslint-disable-next-line radix
-          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount.replace('.', '')));
+          await this._userRepository.updateBalance(userId, useCasePayload.gross_amount);
           break;
         case 'capture':
           // Perform actions for `capture` case

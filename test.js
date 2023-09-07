@@ -29,4 +29,4 @@ function testNominal(nominal) {
   console.log(typeof nominal2);
 }
 
-testNominal('120000.00');
+testNominal('5000000.00');
