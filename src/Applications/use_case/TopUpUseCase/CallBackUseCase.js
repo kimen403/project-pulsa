@@ -27,7 +27,7 @@ class CallBackUseCase {
       // update status
       // eslint-disable-next-line default-case
       switch (useCasePayload.transaction_status) {
-        case 'settlement':
+        case 'settlement' || 'capture':
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
           await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
           console.log('masuk settlement');
