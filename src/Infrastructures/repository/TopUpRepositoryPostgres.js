@@ -48,6 +48,19 @@ class TopUpRepositoryPostgres extends TopUpRepository {
     }
     return result.rows[0];
   }
+
+  async getHistoryTopUpByUserId(userId) {
+    const query = {
+      text: 'SELECT * FROM history_topup WHERE id_user = $1',
+      values: [userId],
+    };
+
+    const result = await this._pool.query(query);
+    if (!result.rows.length) {
+      throw new InvariantError('Gagal update status');
+    }
+    return result.rows;
+  }
 }
 
 module.exports = TopUpRepositoryPostgres;

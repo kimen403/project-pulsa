@@ -7,6 +7,15 @@ const routes = (handler) => [
       auth: 'pulsa_jwt',
     },
   },
+  {
+    method: 'GET',
+    path: '/history/topup',
+    handler: handler.getHistoryTopupHandler,
+    options: {
+      auth: 'pulsa_jwt',
+    },
+  },
+
   // {
   //     method: 'DELETE',
   //     path: '/threads/{threadId}/comments/{commentId}',

@@ -88,6 +88,7 @@ const UploadBannerUseCase = require('../Applications/use_case/ServerAdminUseCase
 
 // TransaksiUseCase
 const PostNewTransaksiUseCase = require('../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
+const HistoryTopUpUseCase = require('../Applications/use_case/TopUpUseCase/HistoryTopUpUseCase');
 // creating container
 // TransaksiRepository
 const TransaksiRepository = require('../Domains/transaksi/TransaksiRepository');
@@ -611,6 +612,20 @@ container.register([
         {
           name: 'digiRepository',
           internal: Digirepository.name,
+        },
+      ],
+    },
+  },
+  // historyTopUpUseCase
+  {
+    key: HistoryTopUpUseCase.name,
+    Class: HistoryTopUpUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'topUpRepository',
+          internal: TopUpRepository.name,
         },
       ],
     },

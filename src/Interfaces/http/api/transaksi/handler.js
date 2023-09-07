@@ -1,6 +1,7 @@
 // const AddCommentUseCase = require("../../../../Applications/use_case/CommentUseCase/AddCommentUseCase");
 // const DeleteCommentUseCase = require("../../../../Applications/use_case/CommentUseCase/DeleteCommentUseCase");
 
+const HistoryTopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/HistoryTopUpUseCase');
 const PostNewTransaksiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
 const NewTransaksi = require('../../../../Domains/transaksi/entities/NewTransaksi');
 
@@ -9,6 +10,7 @@ class TransaksiHandler {
     this._container = container;
 
     this.postTransaksiHandler = this.postTransaksiHandler.bind(this);
+    this.getHistoryTopupHandler = this.getHistoryTopupHandler.bind(this);
     // this.postCommentHandler = this.postCommentHandler.bind(this);
     // this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
   }
@@ -29,6 +31,19 @@ class TransaksiHandler {
     });
 
     response.code(201);
+    return response;
+  }
+
+  async getHistoryTopupHandler(request, h) {
+    const userId = request.auth.credentials.id;
+    const getHistoryTopUpUseCase = this._container.getInstance(HistoryTopUpUseCase.name);
+    const historyTopUp = await getHistoryTopUpUseCase.execute(userId);
+
+    const response = h.response({
+      status: 'success',
+      historyTopUp,
+    });
+    response.code(200);
     return response;
   }
   // async postCommentHandler(request, h) {
