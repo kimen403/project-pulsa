@@ -40,7 +40,7 @@ class CallBackUseCase {
           console.log('userId', userId);
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
           // eslint-disable-next-line radix
-          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount.replace('.', '')));
+          await this._userRepository.updateBalance(userId, parseFloat(useCasePayload.gross_amount).toFixed(2));
           break;
         case 'pending':
           // Perform actions for `pending` case
