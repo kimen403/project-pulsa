@@ -38,7 +38,7 @@ class CallBackUseCase {
           console.log('masuk capture');
           console.log('userId', userId);
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
-          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
+          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 2));
           break;
         case 'pending':
           // Perform actions for `pending` case
