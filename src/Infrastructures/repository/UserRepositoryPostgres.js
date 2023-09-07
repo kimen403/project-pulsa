@@ -132,7 +132,7 @@ class UserRepositoryPostgres extends UserRepository {
 
   async updateBalance(idUser, nominal) {
     console.log(typeof nominal);
-    const nominal2 = nominal;
+    const nominal2 = +nominal;
     console.log(typeof nominal2);
     console.log(nominal2);
     const query1 = {
