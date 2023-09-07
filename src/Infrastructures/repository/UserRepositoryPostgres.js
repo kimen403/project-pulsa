@@ -131,15 +131,16 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async updateBalance(idUser, nominal) {
+  // Assuming `this._pool` is properly established and connected to the database
     const query = {
-      text: 'UPDATE users SET saldo = saldo + $1 WHERE id_user = $2 ',
+      text: 'UPDATE users SET saldo = saldo + $1 WHERE id_user = $2 RETURNING saldo',
       values: [nominal, idUser],
     };
     try {
-      await this._pool.query(query);
-      console.log('berhasil update saldo');
+      const result = await this._pool.query(query);
+      console.log('Successfully updated saldo:', result);
     } catch (error) {
-      console.log(error);
+      console.error('Error updating saldo:', error);
     }
   }
 }
