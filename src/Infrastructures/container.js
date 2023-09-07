@@ -37,6 +37,11 @@ const ProductsRepositoryPostgres = require('./repository/ProductsRepositoryPostg
 
 const DigiRepositoryServer = require('./services/ServerDigiRepository');
 const Digirepository = require('../Applications/services/DigiRepository');
+
+// topUpRepository
+const TopUpRepository = require('../Domains/topup/TopUpRepository');
+const TopUpRepositoryPostgres = require('./repository/TopUpRepositoryPostgres');
+
 // use case
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
@@ -93,7 +98,20 @@ const container = createContainer();
 // registering services and repository
 container.register([
   // storageService
-
+  {
+    key: TopUpRepository.name,
+    Class: TopUpRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
   {
     key: 'idGenerator',
     Class: nanoid,
@@ -357,7 +375,6 @@ container.register([
       ],
     },
   },
-
   // uploadUseCase
   {
     key: UploadUseCase.name,
@@ -382,6 +399,10 @@ container.register([
         {
           name: 'midtransRepository',
           internal: MidtransRepository.name,
+        },
+        {
+          name: 'topUpRepository',
+          internal: TopUpRepository.name,
         },
       ],
     },
@@ -528,7 +549,6 @@ container.register([
       ],
     },
   },
-
   // updateProductsServerUseCase
   {
     key: UpdateProductsServerUseCase.name,
@@ -543,9 +563,7 @@ container.register([
       ],
     },
   },
-
   // postNewTransaksiUseCase
-
   {
     key: PostNewTransaksiUseCase.name,
     Class: PostNewTransaksiUseCase,
@@ -560,10 +578,7 @@ container.register([
           name: 'userRepository',
           internal: UserRepository.name,
         },
-        // {
-        //   name: 'idGenerator',
-        //   internal: 'idGenerator',
-        // },
+
         {
           name: 'hashGenerator',
           internal: HashMd5.name,

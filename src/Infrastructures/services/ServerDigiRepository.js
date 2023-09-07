@@ -1,6 +1,7 @@
 const { default: axios } = require('axios');
 
 const DigiRepository = require('../../Applications/services/DigiRepository');
+const InvariantError = require('../../Commons/exceptions/InvariantError');
 
 class DigiRepositoryServer
   extends DigiRepository {
@@ -27,10 +28,18 @@ class DigiRepositoryServer
 
   async createTransaksi(newTransaksi) {
     console.log({ ...newTransaksi });
-
-    const addedTransaksi = await axios.post('https://api.digiflazz.com/v1/transaction', { ...newTransaksi });
-    console.log(`berhasil${addedTransaksi}`);
-    return addedTransaksi;
+    try {
+      const addedTransaksi = await axios.post('https://api.digiflazz.com/v1/transaction', { ...newTransaksi }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(addedTransaksi);
+      return addedTransaksi;
+    } catch (error) {
+      console.log(error.response.data);
+      throw new InvariantError('Transaksi gagal ditambahkan');
+    }
   }
 }
 

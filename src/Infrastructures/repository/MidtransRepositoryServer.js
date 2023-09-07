@@ -9,7 +9,7 @@ class MidtransRepositoryServer extends MidtransRepository {
     this._midtransCli = midtransCli;
   }
 
-  async createPayment(nominal, orderId) {
+  async createPayment(nominal, orderId, userId) {
     const parameter = {
       transaction_details: {
         order_id: orderId,
@@ -18,7 +18,21 @@ class MidtransRepositoryServer extends MidtransRepository {
       credit_card: {
         secure: true,
       },
+      enabled_payments: ['credit_card',
+        'echannel', 'qris',
+        'other_va', 'gopay', 'indomaret',
+        'shopeepay', 'kredivo'],
+      item_details: [{
+        id: 'Topup',
+        price: nominal,
+        quantity: 1,
+        name: 'Topup Saldo',
+        brand: 'Toko2up',
+        category: 'topup',
+        merchant_name: 'Toko2up',
+      }],
     };
+
     const response = await this._midtransCli.createTransaction(parameter);
     return response;
 

@@ -5,3 +5,5 @@ package-lock.json
 coverage
 
 .env
+refleksikeysecret.pem
+README.txt

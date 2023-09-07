@@ -34,7 +34,7 @@ class PostNewTransaksiUseCase {
     // membuatId
     const id = `transaksi-${this._idGenerator(15)}`;
     const username = process.env.DIGI_USERNAME;
-    const apiKey = process.env.DIGI_APIKEY;
+    const apiKey = process.env.DIGI_DEV_KEY;
 
     // NOTE - Mengurangi saldo user
     await this._userRepository.reudceSaldo(authUserId, hargaJual);
@@ -51,7 +51,9 @@ class PostNewTransaksiUseCase {
     await this._transaksiRepository.createTransaksi(transaksiDatabase);
 
     // membuat hash
-    const hash = await this._hashGenerator.hashMd5(username + apiKey + id);
+    const hash2 = (username + apiKey + id);
+    console.log(hash2);
+    const hash = await this._hashGenerator.hashMd5(hash2);
     // console.log('');
     const newTransaksiEntity = new PostTransaksiDigi({
       username: process.env.DIGI_USERNAME,
