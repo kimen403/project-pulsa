@@ -14,8 +14,8 @@ class CryptoHashMd5 extends HashMd5 {
   }
 
   async compareSHA512(hash, hashObject) {
-    const sha512 = this._cryptoHash.createHash('sha512');
-    sha512.update(hashObject).digest('hex');
+    const sha512 = this._cryptoHash.createHash('sha512').update(hashObject).digest('hex');
+    // sha512.update(hashObject).digest('hex');
     if (hash !== sha512) {
       throw new AuthenticationError('signature midtrans tidak valid');
     }

@@ -14,9 +14,9 @@ class CallBackUseCase {
   }
 
   async execute(useCasePayload) {
-    console.log('masuk usecase callback');
     const hashObject = (useCasePayload.order_id + useCasePayload.status_code + useCasePayload.gross_amount + process.env.MIDTRANS_SERVER_KEY);
     const hash = useCasePayload.signature_key;
+    console.log('masuk usecase callback');
     const res = await this._hashGenerator.compareSHA512(hash, hashObject);
     console.log('hasil compare', res);
     // const newComment = new NewComment(useCasePayload);
