@@ -131,21 +131,10 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async updateBalance(idUser, nominal) {
-    console.log(typeof nominal);
-    const nominal2 = +nominal;
-    console.log(typeof nominal2);
-    console.log(nominal2);
-    console.log(idUser);
-    const query1 = {
-      text: 'SELECT saldo FROM users WHERE "id_user" = $1',
-      values: [idUser.id_user],
-    };
-    const saldoAwal = await this._pool.query(query1);
-    console.log(saldoAwal.rows[0].saldo);
-    const saldoAkhir = saldoAwal.rows[0].saldo + nominal2;
+    const nominal2 = parseInt(nominal, 10);
     const query = {
-      text: 'UPDATE users SET saldo = $1 WHERE "id_user" = $2 RETURNING saldo',
-      values: [saldoAkhir, idUser.id_user],
+      text: 'UPDATE users SET saldo = saldo + $1 WHERE "id_user" = $2 RETURNING saldo',
+      values: [nominal2, idUser.id_user],
     };
     try {
       const result = await this._pool.query(query);
