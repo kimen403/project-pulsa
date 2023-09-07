@@ -1,6 +1,7 @@
 const UploadUseCase = require('../../../../Applications/services/UploadUseCase');
 const GetProductsUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/GetProductsUseCase');
 const UpdateProductsServerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UpdateProductsServerUseCase');
+const CallBackUseCase = require('../../../../Applications/use_case/TopUpUseCase/CallBackUseCase');
 const TopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
 class ServicesHandler {
@@ -8,7 +9,7 @@ class ServicesHandler {
     this._container = container;
     this.postPriceListHandler = this.postPriceListHandler.bind(this);
     this.postTopupHandler = this.postTopupHandler.bind(this);
-    this.postPayHandler = this.postPayHandler.bind(this);
+    this.postConfirmHandler = this.postConfirmHandler.bind(this);
     this.postUploadHandler = this.postUploadHandler.bind(this);
     this.getUpdateProductsHandler = this.getUpdateProductsHandler.bind(this);
 
@@ -47,9 +48,11 @@ class ServicesHandler {
     return response;
   }
 
-  async postPayHandler(request, h) {
+  async postConfirmHandler(request, h) {
     const usecasePayload = request.payload;
     console.log('payload dari callback:', usecasePayload);
+    const callBackUseCase = this._container.getInstance(CallBackUseCase.name);
+    const res = await callBackUseCase.execute(usecasePayload);
 
     const response = h.response({
       status: 'success',

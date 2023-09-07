@@ -43,6 +43,10 @@ const TopUpRepository = require('../Domains/topup/TopUpRepository');
 const TopUpRepositoryPostgres = require('./repository/TopUpRepositoryPostgres');
 
 // use case
+
+// CallbackUseCase
+const CallBackUseCase = require('../Applications/use_case/TopUpUseCase/CallBackUseCase');
+
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/Auth_UseCase/RefreshAuthenticationUseCase');
@@ -81,8 +85,6 @@ const GetAllProductsUseCase = require('../Applications/use_case/ProductsUseCase/
 
 // ServerAdminUseCase
 const UploadBannerUseCase = require('../Applications/use_case/ServerAdminUseCase/UploadBannerUseCase');
-const HashMd = require('../Applications/security/Md5PasswordHash');
-const HashMdcrypto = require('../Applications/security/Md5PasswordHash');
 
 // TransaksiUseCase
 const PostNewTransaksiUseCase = require('../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
@@ -281,6 +283,24 @@ container.register([
 
 // registering use cases
 container.register([
+  // CallbackUseCase
+  {
+    key: CallBackUseCase.name,
+    Class: CallBackUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'topUpRepository',
+          internal: TopUpRepository.name,
+        },
+        {
+          name: 'hashGenerator',
+          internal: HashMd5.name,
+        },
+      ],
+    },
+  },
   {
     key: GetProductsUseCase.name,
     Class: GetProductsUseCase,

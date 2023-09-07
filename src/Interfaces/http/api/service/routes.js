@@ -15,7 +15,7 @@ const routes = (handler) => [
   {
     method: 'POST',
     path: '/topup/confirm',
-    handler: handler.postPayHandler,
+    handler: handler.postConfirmHandler,
   },
   {
     method: 'POST',
