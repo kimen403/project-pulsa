@@ -69,7 +69,7 @@ class UserRepositoryPostgres extends UserRepository {
   async getIdRoleSaldoByUsername(username) {
     // console.log('masuk get id role saldo by username');
     const query = {
-      text: 'SELECT id_user AS id,role,saldo FROM users WHERE username = $1',
+      text: 'SELECT id_user AS id,fullname,username,email,role,saldo FROM users WHERE username = $1',
       values: [username],
     };
 

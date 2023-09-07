@@ -16,22 +16,23 @@ class LoginUserUseCase {
 
   async execute(useCasePayload) {
     const { username, password } = new UserLogin(useCasePayload);
-
     const encryptedPassword = await this._userRepository.getPasswordByUsername(username);
 
     await this._passwordHash.comparePassword(password, encryptedPassword);
-    const { id, role, saldo } = await this._userRepository.getIdRoleSaldoByUsername(username);
-    const saldoString = saldo.toString();
+    const profile = await this._userRepository.getIdRoleSaldoByUsername(username);
+    const { id, role } = profile;
     const accessToken = await this._authenticationTokenManager
       .createAccessToken({ username, id, role });
     const refreshToken = await this._authenticationTokenManager
       .createRefreshToken({ username, id, role });
 
+    console.log('masuk usecase login');
     // const newAuthentication2 = {
     //   accessToken, refreshToken, role, saldoString,
     // };
+    console.log({ ...profile });
     const newAuthentication = new NewAuthentication({
-      accessToken, refreshToken, role, saldoString,
+      accessToken, refreshToken, ...profile,
     });
     // console.log('newAuthentication');
 
