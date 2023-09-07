@@ -137,6 +137,7 @@ class UserRepositoryPostgres extends UserRepository {
     };
     try {
       await this._pool.query(query);
+      console.log('berhasil update saldo');
     } catch (error) {
       console.log(error);
     }
