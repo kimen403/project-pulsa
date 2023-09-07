@@ -29,8 +29,8 @@ class CallBackUseCase {
       switch (useCasePayload.transaction_status) {
         case 'settlement' || 'capture':
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
-          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
           console.log('masuk settlement');
+          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
           break;
         case 'pending':
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'pending');

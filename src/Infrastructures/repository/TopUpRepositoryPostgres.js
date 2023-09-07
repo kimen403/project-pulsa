@@ -26,12 +26,14 @@ class TopUpRepositoryPostgres extends TopUpRepository {
       text: 'UPDATE history_topup SET status = $1 WHERE id = $2 RETURNING id, status',
       values: [status, orderId],
     };
-
-    const result = await this._pool.query(query);
-    if (!result.rows.length) {
+    try {
+      const result = await this._pool.query(query);
+      console.log(result.rows[0]);
+      return result.rows[0];
+    } catch (error) {
+      console.log(error);
       throw new InvariantError('Gagal update status');
     }
-    return result.rows[0];
   }
 
   async getUserId(orderId) {
