@@ -24,24 +24,29 @@ class CallBackUseCase {
     console.log('masuk switch');
     console.log('status', useCasePayload.transaction_status);
     if (res) {
-      // update status
+      // Check if `res` is truthy before executing the switch statement
       // eslint-disable-next-line default-case
       switch (useCasePayload.transaction_status) {
-        case 'settlement' || 'capture':
-          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
+        case 'settlement':
+          // Perform actions for `settlement` case
           console.log('masuk settlement');
+          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
+          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
+          break;
+        case 'capture':
+          // Perform actions for `capture` case
+          console.log('masuk capture');
+          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
           await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
           break;
         case 'pending':
+          // Perform actions for `pending` case
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'pending');
           break;
         case 'deny':
-          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'failed');
-          break;
         case 'expire':
-          await this._topUpRepository.updateStatus(useCasePayload.order_id, 'failed');
-          break;
         case 'cancel':
+          // Perform actions for `deny`, `expire`, and `cancel` cases
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'failed');
           break;
       }
