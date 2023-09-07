@@ -298,6 +298,11 @@ container.register([
           name: 'hashGenerator',
           internal: HashMd5.name,
         },
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+
       ],
     },
   },

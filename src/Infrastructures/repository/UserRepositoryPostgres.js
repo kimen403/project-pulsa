@@ -129,6 +129,18 @@ class UserRepositoryPostgres extends UserRepository {
     // console.log(result);
     return result;
   }
+
+  async updateBalance(idUser, nominal) {
+    const query = {
+      text: 'UPDATE users SET saldo = saldo + $1 WHERE id_user = $2 ',
+      values: [nominal, idUser],
+    };
+    try {
+      await this._pool.query(query);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = UserRepositoryPostgres;
