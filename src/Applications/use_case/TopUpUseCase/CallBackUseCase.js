@@ -31,14 +31,15 @@ class CallBackUseCase {
           // Perform actions for `settlement` case
           console.log('masuk settlement');
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
-          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
+          // eslint-disable-next-line radix
+          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount.replace('.', '')));
           break;
         case 'capture':
           // Perform actions for `capture` case
           console.log('masuk capture');
           console.log('userId', userId);
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
-          await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 2));
+          await this._userRepository.updateBalance(userId, Number.parseInt(useCasePayload.gross_amount));
           break;
         case 'pending':
           // Perform actions for `pending` case
