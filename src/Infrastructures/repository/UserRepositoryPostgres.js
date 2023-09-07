@@ -132,7 +132,7 @@ class UserRepositoryPostgres extends UserRepository {
 
   async updateBalance(idUser, nominal) {
     console.log(typeof nominal);
-    const nominal2 = +nominal;
+    const nominal2 = nominal;
     console.log(typeof nominal2);
     console.log(nominal2);
     const query1 = {
@@ -140,6 +140,7 @@ class UserRepositoryPostgres extends UserRepository {
       values: [idUser],
     };
     const saldoAwal = await this._pool.query(query1);
+    console.log(saldoAwal.rows[0].saldo);
     const saldoAkhir = saldoAwal.rows[0].saldo + nominal2;
     const query = {
       text: 'UPDATE users SET saldo = $1 WHERE id_user = $2 RETURNING saldo',
