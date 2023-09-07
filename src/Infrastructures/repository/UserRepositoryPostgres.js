@@ -135,9 +135,15 @@ class UserRepositoryPostgres extends UserRepository {
     const nominal2 = +nominal;
     console.log(typeof nominal2);
     console.log(nominal2);
+    const query1 = {
+      text: 'SELECT saldo FROM users WHERE id_user = $1',
+      values: [idUser],
+    };
+    const saldoAwal = await this._pool.query(query1);
+    const saldoAkhir = saldoAwal.rows[0].saldo + nominal2;
     const query = {
-      text: 'UPDATE users SET saldo = users.saldo + $1 WHERE id_user = $2 RETURNING users.saldo',
-      values: [nominal2, idUser],
+      text: 'UPDATE users SET saldo = $1 WHERE id_user = $2 RETURNING saldo',
+      values: [saldoAkhir, idUser],
     };
     try {
       const result = await this._pool.query(query);
