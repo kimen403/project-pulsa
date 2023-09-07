@@ -132,6 +132,7 @@ class UserRepositoryPostgres extends UserRepository {
 
   async updateBalance(idUser, nominal) {
     // eslint-disable-next-line radix
+    console.log('nominal', nominal);
     const nomina = parseFloat(nominal).toFixed(2);
     const nominal2 = +nomina;
     console.log('masuk update balance', idUser.id_user, nominal2);
