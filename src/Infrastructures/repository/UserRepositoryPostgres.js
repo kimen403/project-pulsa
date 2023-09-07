@@ -131,7 +131,10 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async updateBalance(idUser, nominal) {
-    const nominal2 = parseInt(nominal, 10);
+    // eslint-disable-next-line radix
+    const nominal2 = parseInt(nominal);
+    console.log('masuk update balance', idUser.id_user, nominal2);
+    console.log(typeof nominal2);
     const query = {
       text: 'UPDATE users SET saldo = saldo + $1 WHERE "id_user" = $2 RETURNING saldo',
       values: [nominal2, idUser.id_user],
