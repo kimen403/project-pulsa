@@ -39,8 +39,8 @@ class CallBackUseCase {
           console.log('masuk capture');
           console.log('userId', userId);
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
-          // eslint-disable-next-line radix
-          await this._userRepository.updateBalance(userId, parseFloat(useCasePayload.gross_amount).toFixed(2));
+
+          await this._userRepository.updateBalance(userId, useCasePayload.gross_amount);
           break;
         case 'pending':
           // Perform actions for `pending` case

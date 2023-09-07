@@ -132,7 +132,8 @@ class UserRepositoryPostgres extends UserRepository {
 
   async updateBalance(idUser, nominal) {
     // eslint-disable-next-line radix
-    const nominal2 = parseInt(nominal);
+    const nomina = parseFloat(nominal).toFixed(2);
+    const nominal2 = +nomina;
     console.log('masuk update balance', idUser.id_user, nominal2);
     console.log(typeof nominal2);
     const query = {
@@ -141,7 +142,7 @@ class UserRepositoryPostgres extends UserRepository {
     };
     try {
       const result = await this._pool.query(query);
-      console.log('Successfully updated saldo:', result);
+      console.log('Successfully updated saldo:', result.rows[0]);
     } catch (error) {
       console.error('Error updating saldo:', error);
     }
