@@ -21,6 +21,8 @@ class CallBackUseCase {
     const res = await this._hashGenerator.compareSHA512(hash, hashObject);
     console.log('hasil compare', res);
     const userId = await this._topUpRepository.getUserId(useCasePayload.order_id);
+    console.log('masuk switch');
+    console.log('status', useCasePayload.transaction_status);
     if (res) {
       // update status
       // eslint-disable-next-line default-case
@@ -28,6 +30,7 @@ class CallBackUseCase {
         case 'settlement':
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'success');
           await this._userRepository.updateBalance(userId, parseInt(useCasePayload.gross_amount, 10));
+          console.log('masuk settlement');
           break;
         case 'pending':
           await this._topUpRepository.updateStatus(useCasePayload.order_id, 'pending');
