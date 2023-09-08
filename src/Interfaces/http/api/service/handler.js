@@ -13,6 +13,7 @@ class ServicesHandler {
     this.postConfirmHandler = this.postConfirmHandler.bind(this);
     this.postUploadHandler = this.postUploadHandler.bind(this);
     this.getUpdateProductsHandler = this.getUpdateProductsHandler.bind(this);
+    this.postCallbackDigiflazzHandler = this.postCallbackDigiflazzHandler.bind(this);
 
     // this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
   }
