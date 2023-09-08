@@ -100,7 +100,7 @@ class ServicesHandler {
     const secret = 'somesecretvalue';
     const post_data = request.payload.data;
     console.log(post_data);
-    const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
+    const signature = crypto.createHmac('sha1', secret, post_data);
     console.log(signature);
 
     if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
