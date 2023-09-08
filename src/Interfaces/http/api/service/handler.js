@@ -92,10 +92,12 @@ class ServicesHandler {
   }
 
   async postCallbackDigiflazzHandler(request, h) {
-    const secret = `${process.env.DIGI_DEV_KEY}`;
+    const secret = 'test';
 
-    const post_data = request.payload.data;
+    const post_data = request.payload;
+    console.log(post_data);
     const post_data2 = JSON.stringify(post_data);
+    console.log(post_data2);
     try {
       // JSON.parse(post_data);
       const signature = crypto.createHmac('sha1', secret).update(post_data2).digest('hex');
