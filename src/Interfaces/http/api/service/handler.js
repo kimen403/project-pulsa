@@ -94,7 +94,7 @@ class ServicesHandler {
   async postCallbackDigiflazzHandler(request, h) {
     const secret = 'test';
 
-    const post_data = request.payload;
+    const post_data = request.payload.data;
     const post_data2 = JSON.stringify(post_data);
     try {
       // JSON.parse(post_data);
