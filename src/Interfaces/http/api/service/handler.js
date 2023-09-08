@@ -97,11 +97,11 @@ class ServicesHandler {
     console.log('payload dari callback:', usecasePayload);
     console.log('payload Header dari callback:', usecasePayloadHeader);
     console.log('payload Header dari callback:', usecasePayloadHeader['x-hub-signature']);
-    const secret = 'somesecretvalue';
+    const secret = 'test';
     const post_data = request.payload.data;
     console.log(post_data);
-    const signature = crypto.createHmac('sha1', secret, post_data);
-    console.log(signature);
+    const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
+    console.log('ini signaturebuatan kita', signature);
 
     if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
       console.log(JSON.parse(post_data));
