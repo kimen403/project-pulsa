@@ -95,9 +95,10 @@ class ServicesHandler {
     const secret = 'test';
 
     const post_data = request.payload;
+    const post_data2 = JSON.stringify(post_data);
     try {
       // JSON.parse(post_data);
-      const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
+      const signature = crypto.createHmac('sha1', secret).update(post_data2).digest('hex');
       console.log(signature);
       if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
         console.log(JSON.parse(post_data));
