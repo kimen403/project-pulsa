@@ -94,9 +94,11 @@ class ServicesHandler {
   async postCallbackDigiflazzHandler(request, h) {
     const usecasePayloadHeader = request.headers;
     const usecasePayload = request.payload;
-
+    console.log('payload dari callback:', usecasePayload);
+    console.log('payload Header dari callback:', usecasePayloadHeader);
     const secret = 'somesecretvalue';
     const post_data = request.payload;
+    console.log(post_data);
     const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
     console.log(signature);
 
