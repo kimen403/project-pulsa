@@ -19,6 +19,11 @@ const routes = (handler) => [
   },
   {
     method: 'POST',
+    path: '/callback/digiflazz',
+    handler: handler.postCallbackDigiflazzHandler,
+  },
+  {
+    method: 'POST',
     path: '/upload',
     handler: handler.postUploadHandler,
     options: {

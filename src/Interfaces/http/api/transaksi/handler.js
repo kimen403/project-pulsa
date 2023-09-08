@@ -11,23 +11,18 @@ class TransaksiHandler {
 
     this.postTransaksiHandler = this.postTransaksiHandler.bind(this);
     this.getHistoryTopupHandler = this.getHistoryTopupHandler.bind(this);
-    // this.postCommentHandler = this.postCommentHandler.bind(this);
-    // this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
   }
 
   async postTransaksiHandler(request, h) {
     const usecasePayload = new NewTransaksi(request.payload);
 
-    console.log('usecasePayload', usecasePayload);
-    const addTransaksiUseCase = this._container.getInstance(PostNewTransaksiUseCase.name);
-    // console.log(addTransaksiUseCase);
-    const addedTransaksi = await addTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id);
+    const createTransaksiUseCase = this._container.getInstance(PostNewTransaksiUseCase.name);
+    // console.log('usecasePayload', usecasePayload);
+    // console.log(createTransaksiUseCase);
+    const addedTransaksi = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id);
 
     const response = h.response({
-      status: 'success',
-      data: {
-        addedTransaksi,
-      },
+      status: addedTransaksi,
     });
 
     response.code(201);

@@ -5,9 +5,6 @@ const NewTransaksi = require('../../../Domains/transaksi/entities/NewTransaksi')
 const PostTransaksiDigi = require('../../../Domains/transaksi/entities/PostTransaksiDigi');
 const TransaksiDatabase = require('../../../Domains/transaksi/entities/TransaksiDatabase');
 
-// const AddedComment = require('../../../Domains/comments/entities/AddedComment');
-// const NewComment = require('../../../Domains/comments/entities/NewComment');
-
 class PostNewTransaksiUseCase {
   // constructor akan menerima parameter yang dikirimkan oleh dependency injection
   // Parameter adalah kumpulan fungsi yang dibutuhkan oleh use case
@@ -27,15 +24,15 @@ class PostNewTransaksiUseCase {
     // cek harga produk
     const hargaProduk = await this._transaksiRepository.cekHargaProduk(newTransaksi.sku);
     // naikin harga
+    console.log(`harga jual${hargaProduk}`);
     const hargaJual = hargaProduk + hargaProduk * 0.1;
-    console.log(`harga jual${hargaJual}`);
     // cek Saldo User
     await this._userRepository.cekSaldo(authUserId, hargaJual);
     // membuatId
     const id = `transaksi-${this._idGenerator(15)}`;
     const username = process.env.DIGI_USERNAME;
     const apiKey = process.env.DIGI_DEV_KEY;
-
+    console.log(`id${id}`);
     // NOTE - Mengurangi saldo user
     await this._userRepository.reudceSaldo(authUserId, hargaJual);
 
@@ -64,16 +61,21 @@ class PostNewTransaksiUseCase {
       // test: true,
     });
 
-    console.log(newTransaksiEntity);
+    const responseServer = await this._digiRepository.createTransaksiToServer(newTransaksiEntity);
 
-    const addedTransaksi = await this._digiRepository.createTransaksi(newTransaksiEntity);
-    return addedTransaksi;
-    // const newComment = new NewComment(useCasePayload);
-    // await this._threadRepository.verifyAvailableThread(newComment.threadId);
+    console.log(responseServer.status);
+    switch (responseServer.status.toLowerCase()) {
+      case 'sukses':
+        return 'sukses';
 
-    // const addedComment = await this._commentRepository.addComment(newComment);
-    // // console.log('newComment', newComment.threadId)
-    // return new AddedComment(addedComment);
+      case 'gagal':
+        await this._userRepository.refundBalance(authUserId, hargaJual);
+        return 'gagal';
+      case 'pending':
+        return 'pending';
+      default:
+        return 'gagal';
+    }
   }
 }
 

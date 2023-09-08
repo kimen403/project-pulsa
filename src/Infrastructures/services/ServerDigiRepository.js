@@ -26,16 +26,16 @@ class DigiRepositoryServer
     return products;
   }
 
-  async createTransaksi(newTransaksi) {
-    console.log({ ...newTransaksi });
+  async createTransaksiToServer(newTransaksi) {
+    // console.log({ ...newTransaksi });
     try {
-      const addedTransaksi = await axios.post('https://api.digiflazz.com/v1/transaction', { ...newTransaksi }, {
+      const response = await axios.post('https://api.digiflazz.com/v1/transaction', { ...newTransaksi }, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      console.log(addedTransaksi);
-      return addedTransaksi;
+      console.log(response.data);
+      return response.data.data;
     } catch (error) {
       console.log(error.response.data);
       throw new InvariantError('Transaksi gagal ditambahkan');

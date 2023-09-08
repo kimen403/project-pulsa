@@ -8,7 +8,6 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
   }
 
   async createTransaksi(newTransaksi) {
-    // const { title, body, owner } = newThread;
     const {
       id, idUser, sku, customerRef, status,
     } = newTransaksi;
@@ -29,55 +28,6 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     console.log(`cek saldo berhasil${rows[0].price}`);
     return rows[0].price;
   }
-
-  // const id = `thread-${this._idGenerator()}`;
-  // const date = new Date().toISOString();
-
-  // const query = {
-  //   text: 'INSERT INTO threads VALUES(Transaksi, , , , ) RETURNING id, title, owner',
-  //   values: [id, title, body, date, owner],
-  // };
-
-  // const { rows } = await this._pool.query(query);
-  // return new AddedThread(rows[0]);
 }
-
-//   async getThreadById(threadId) {
-// const query = {
-//   text: `SELECT threads.id,
-//         threads.title,
-//         threads.body,
-//         threads.date,
-//         users.username
-//         FROM threads
-//         LEFT JOIN users ON threads.owner = users.id
-//         WHERE threads.id = Transaksi`,
-//   values: [threadId],
-// };
-
-// const { rows, rowCount } = await this._pool.query(query);
-
-// if (!rowCount) {
-//   throw new NotFoundError('thread tidak ditemukan');
-// }
-
-// return rows[0];
-//   }
-
-//   async verifyAvailableThread(threadId) {
-//   const query = {
-//     text: 'SELECT 1 FROM threads WHERE id = Transaksi',
-//     values: [threadId],
-//   };
-
-//   const { rowCount } = await this._pool.query(query);
-
-//   if (!rowCount) {
-//     throw new NotFoundError('thread tidak ditemukan');
-//   }
-
-//   return true;
-//   }
-// }
 
 module.exports = TransaksiRepositoryPostgres;

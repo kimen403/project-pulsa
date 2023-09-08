@@ -88,6 +88,15 @@ class ServicesHandler {
     response.code(200);
     return response;
   }
+
+  async postCallbackDigiflazzHandler(request, h) {
+    const usecasePayload = request.payload;
+    console.log('payload dari callback:', usecasePayload);
+    return h.response({
+      status: 'success',
+    });
+  }
+
   // async deleteCommentHandler(request, h) {
   //     const usecasePayload = {
   //         commentId: request.params.commentId,
