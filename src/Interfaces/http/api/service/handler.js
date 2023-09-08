@@ -92,30 +92,19 @@ class ServicesHandler {
   }
 
   async postCallbackDigiflazzHandler(request, h) {
-    const usecasePayloadHeader = request.headers;
-    const usecasePayload = request.payload;
-    console.log('payload dari callback:', usecasePayload);
-    console.log('payload Header dari callback:', usecasePayloadHeader);
-    console.log('payload Header dari callback:', usecasePayloadHeader['x-hub-signature']);
     const secret = 'test';
-    const post_data = request.payload.data;
-    console.log(post_data);
+
+    const post_data = request.payload;
     const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
-    console.log('ini signaturebuatan kita', signature);
+
+    console.log(signature);
 
     if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
       console.log(JSON.parse(post_data));
-      console.log('gagal signature callback tidak valid');
-      h.code(400);
-      return h.response({
-        status: 'failed',
-      });
+      console.log('signature valid');
     }
-    console.log('payload dari callback:', usecasePayload);
-    console.log('payload Header dari callback:', usecasePayloadHeader);
-    return h.response({
-      status: 'success',
-    });
+
+    return h.response().code(200);
   }
 
   // async deleteCommentHandler(request, h) {
