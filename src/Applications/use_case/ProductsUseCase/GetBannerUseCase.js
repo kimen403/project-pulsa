@@ -14,7 +14,7 @@ class GetBannerUseCase {
   }
 
   async execute() {
-    console.log('masuk usecase');
+    console.log('masuk usecase getbanner');
     const banner = await this._productsRepository.getBanner();
     return banner;
     // const newComment = new NewComment(useCasePayload);

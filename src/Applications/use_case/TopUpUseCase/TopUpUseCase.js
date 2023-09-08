@@ -17,7 +17,7 @@ class TopUpUseCase {
   }
 
   async execute(id, nominal) {
-    console.log('masuk usecase');
+    console.log('masuk usecase topup');
     const newTopup = new NewTopup({ id, nominal });
     const userId = id;
     // await this._threadRepository.verifyAvailableThread(newComment.threadId);
