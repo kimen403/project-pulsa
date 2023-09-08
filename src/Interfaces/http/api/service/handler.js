@@ -92,7 +92,7 @@ class ServicesHandler {
   }
 
   async postCallbackDigiflazzHandler(request, h) {
-    const secret = process.env.DIGI_DEV_KEY;
+    const secret = `${process.env.DIGI_DEV_KEY}`;
 
     const post_data = request.payload.data;
     const post_data2 = JSON.stringify(post_data);
