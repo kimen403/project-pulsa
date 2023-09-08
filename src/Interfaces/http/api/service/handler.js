@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const UploadUseCase = require('../../../../Applications/services/UploadUseCase');
 const GetProductsUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/GetProductsUseCase');
 const UpdateProductsServerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UpdateProductsServerUseCase');
@@ -92,6 +93,20 @@ class ServicesHandler {
   async postCallbackDigiflazzHandler(request, h) {
     const usecasePayloadHeader = request.headers;
     const usecasePayload = request.payload;
+
+    const secret = 'somesecretvalue';
+    const post_data = request.payload;
+    const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
+    console.log(signature);
+
+    if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
+      console.log(JSON.parse(post_data));
+      console.log('gagal signature callback tidak valid');
+      h.code(400);
+      return h.response({
+        status: 'failed',
+      });
+    }
     console.log('payload dari callback:', usecasePayload);
     console.log('payload Header dari callback:', usecasePayloadHeader);
     return h.response({

@@ -30,3 +30,8 @@ function testNominal(nominal) {
 }
 
 testNominal('5000000.00');
+
+const key = 'test';
+const sha1 = crypto.createHash('sha1').update(key).digest('hex');
+
+console.log('Hash SHA-1 dari "test": ', sha1);
