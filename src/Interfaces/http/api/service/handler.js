@@ -96,8 +96,9 @@ class ServicesHandler {
     const usecasePayload = request.payload;
     console.log('payload dari callback:', usecasePayload);
     console.log('payload Header dari callback:', usecasePayloadHeader);
+    console.log('payload Header dari callback:', usecasePayloadHeader['x-hub-signature']);
     const secret = 'somesecretvalue';
-    const post_data = request.payload;
+    const post_data = request.payload.data;
     console.log(post_data);
     const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
     console.log(signature);
