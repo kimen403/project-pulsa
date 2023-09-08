@@ -90,8 +90,10 @@ class ServicesHandler {
   }
 
   async postCallbackDigiflazzHandler(request, h) {
+    const usecasePayloadHeader = request.headers;
     const usecasePayload = request.payload;
     console.log('payload dari callback:', usecasePayload);
+    console.log('payload Header dari callback:', usecasePayloadHeader);
     return h.response({
       status: 'success',
     });
