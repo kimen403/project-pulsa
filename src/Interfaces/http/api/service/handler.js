@@ -96,19 +96,18 @@ class ServicesHandler {
 
     const post_data = request.payload;
     try {
-      JSON.parse(post_data);
+      // JSON.parse(post_data);
       const signature = crypto.createHmac('sha1', secret).update(post_data).digest('hex');
       console.log(signature);
+      if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
+        console.log(JSON.parse(post_data));
+        console.log('signature valid');
+      }
     } catch (e) {
       console.log('Error signature', e);
     }
 
     // console.log(signature);
-
-    if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
-      console.log(JSON.parse(post_data));
-      console.log('signature valid');
-    }
 
     return h.response().code(200);
   }
