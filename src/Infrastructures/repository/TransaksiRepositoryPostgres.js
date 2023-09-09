@@ -29,6 +29,17 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     return rows[0].price;
   }
 
+  async getUserIdByIdTransaksi(idTransaksi) {
+    console.log('masuk get user id by id transaksi', idTransaksi);
+    const query = {
+      text: 'SELECT id_user FROM transaksi WHERE id = $1',
+      values: [idTransaksi],
+    };
+    const { rows } = await this._pool.query(query);
+    console.log(`cek saldo berhasil${rows[0]}`);
+    return rows[0];
+  }
+
   async updateStatusTransaksiSukses(updateData) {
     console.log('masuk update status transaksi', updateData);
     const updatedat = new Date().toDateString();
@@ -53,11 +64,17 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     };
     await this._pool.query(queryUpdate);
     const hargaProduct = await this.cekHargaProduk(updateData.sku);
+    console.log('harga product', hargaProduct);
+    const idUser = await this.getUserIdByIdTransaksi(updateData.id);
     const queryRefund = {
-      text: 'UPDATE users SET saldo = saldo + $2 WHERE id = $1',
-      values: [updateData.idUser, hargaProduct],
+      text: 'UPDATE users SET saldo = saldo + $2 WHERE id_user = $1',
+      values: [idUser, hargaProduct],
     };
-    await this._pool.query(queryRefund);
+    try {
+      await this._pool.query(queryRefund);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

@@ -22,7 +22,7 @@ class UpdateDataCallback {
     } = payload;
     console.log(rc, sn, tele, wa);
     // veryfiy payload required
-    if (!ref_id || !status || !message || !rc || !sn || !tele || !wa) {
+    if (!ref_id || !status || !message || !rc || !tele || !wa) {
       throw new Error('UPDATE_DATA_CALLBACK.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
