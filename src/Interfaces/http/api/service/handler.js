@@ -4,6 +4,7 @@ const GetProductsUseCase = require('../../../../Applications/use_case/ServerAdmi
 const UpdateProductsServerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UpdateProductsServerUseCase');
 const CallBackUseCase = require('../../../../Applications/use_case/TopUpUseCase/CallBackUseCase');
 const TopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/TopUpUseCase');
+const ValidateSignatureDigiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/ValidateSignatureDigiUseCase');
 
 class ServicesHandler {
   constructor(container) {
@@ -98,18 +99,13 @@ class ServicesHandler {
     console.log(post_data);
     const post_data2 = JSON.stringify(post_data);
     console.log(post_data2);
-    try {
-      // JSON.parse(post_data);
-      const signature = crypto.createHmac('sha1', secret).update(post_data2).digest('hex');
-      console.log(request.headers['x-hub-signature']);
-      console.log(signature);
-      if (request.headers['x-hub-signature'] === `sha1=${signature}`) {
-        console.log('signature valid');
-      }
-    } catch (e) {
-      console.log('Error signature', e);
-    }
 
+    // validate signature
+    const validateSignatureDigiUseCase = this._container.getInstance(ValidateSignatureDigiUseCase.name);
+    const signature1 = request.headers['x-hub-signature'];
+    const payloadData = post_data2;
+    const signatureValid = await validateSignatureDigiUseCase.execute(signature1, payloadData);
+    console.log(signatureValid);
     // console.log(signature);
 
     return h.response().code(200);

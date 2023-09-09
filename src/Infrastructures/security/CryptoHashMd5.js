@@ -22,6 +22,16 @@ class CryptoHashMd5 extends HashMd5 {
     return true;
   }
 
+  async createHmacSHA1(key, data) {
+    return this._cryptoHash.createHmac('sha1', key).update(data).digest('hex');
+  }
+
+  async compareSHA1(signature1, signature2) {
+    if (signature1 !== `sha1=${signature2}`) {
+      throw new AuthenticationError('signature digi tidak valid');
+    }
+    return true;
+  }
   //   async comparePassword(password, hashedPassword) {
   //     const result = await this._bcrypt.compare(password, hashedPassword);
 

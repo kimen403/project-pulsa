@@ -64,6 +64,7 @@ const DeleteCommentUseCase = require('../Applications/use_case/CommentUseCase/De
 
 // Services Digi
 const GetProductsServer = require('./services/ServerDigiRepository');
+const ValidateSignatureDigiUseCase = require('../Applications/use_case/Transaksi_UseCase/ValidateSignatureDigiUseCase');
 
 const TopUpUseCase = require('../Applications/use_case/TopUpUseCase/TopUpUseCase');
 
@@ -626,6 +627,20 @@ container.register([
         {
           name: 'topUpRepository',
           internal: TopUpRepository.name,
+        },
+      ],
+    },
+  },
+  // validateSignatureDigiUseCase
+  {
+    key: ValidateSignatureDigiUseCase.name,
+    Class: ValidateSignatureDigiUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'cryptoHash',
+          internal: HashMd5.name,
         },
       ],
     },
