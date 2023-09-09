@@ -13,6 +13,7 @@ class ValidateSignatureDigiUseCase {
 
   async execute(signature1, payloadData) {
     const secret = `${process.env.DIGIFLAZZ_API_SECRET_CALLBACK}`;
+    console.log('secret', secret);
     const signature2 = await this._cryptoHash.createHmacSHA1(secret, payloadData);
     console.log('signature1', signature1);
     console.log('signature2', signature2);

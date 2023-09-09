@@ -103,8 +103,8 @@ class ServicesHandler {
     // validate signature
     const validateSignatureDigiUseCase = this._container.getInstance(ValidateSignatureDigiUseCase.name);
     const signature1 = request.headers['x-hub-signature'];
-    const payloadData = post_data2;
-    const signatureValid = await validateSignatureDigiUseCase.execute(signature1, payloadData);
+
+    const signatureValid = await validateSignatureDigiUseCase.execute(signature1, post_data2);
     console.log(signatureValid);
     // console.log(signature);
 
