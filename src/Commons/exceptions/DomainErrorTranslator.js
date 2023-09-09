@@ -7,6 +7,12 @@ const DomainErrorTranslator = {
 };
 
 DomainErrorTranslator._directories = {
+  'UPDATE_DATA_CALLBACK.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+    'tidak dapat membuat transaksi baru karena properti yang dibutuhkan tidak ada',
+  ),
+  'UPDATE_DATA_CALLBACK.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'tidak dapat membuat transaksi baru karena tipe data tidak sesuai',
+  ),
   'NEW_AUTH.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
     'tidak dapat membuat authentication baru karena properti yang dibutuhkan tidak ada',
   ),

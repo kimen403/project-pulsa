@@ -24,7 +24,32 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
+    message: {
+      type: 'VARCHAR(50)',
+      notNull: false,
+    },
+    rc: {
+      type: 'VARCHAR(5)',
+      notNull: false,
+    },
+    cs_telegram: {
+      type: 'VARCHAR(50)',
+      notNull: false,
+    },
+    cs_wa: {
+      type: 'VARCHAR(15)',
+      notNull: false,
+    },
+    sn: {
+      type: 'text',
+      notNull: false,
+    },
     created_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+      default: pgm.func('current_timestamp'),
+    },
+    updated_at: {
       type: 'TIMESTAMP',
       notNull: true,
       default: pgm.func('current_timestamp'),

@@ -5,6 +5,7 @@ const UpdateProductsServerUseCase = require('../../../../Applications/use_case/S
 const CallBackUseCase = require('../../../../Applications/use_case/TopUpUseCase/CallBackUseCase');
 const TopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/TopUpUseCase');
 const ValidateSignatureDigiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/ValidateSignatureDigiUseCase');
+const UpdateStatusTransaksiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/UpdateStatusTransaksiUseCase');
 
 class ServicesHandler {
   constructor(container) {
@@ -93,19 +94,25 @@ class ServicesHandler {
   }
 
   async postCallbackDigiflazzHandler(request, h) {
-    const secret = 'test';
-
+    const signature1 = request.headers['x-hub-signature'];
+    const event = request.headers['x-digiflazz-event'].toLowerCase();
+    console.log('masuk', event);
     const post_data = request.payload;
-    console.log(post_data);
     const post_data2 = JSON.stringify(post_data);
-    console.log(post_data2);
-
     // validate signature
     const validateSignatureDigiUseCase = this._container.getInstance(ValidateSignatureDigiUseCase.name);
-    const signature1 = request.headers['x-hub-signature'];
+    await validateSignatureDigiUseCase.execute(signature1, post_data2);
+    const updateStatusTransaksiUseCase = this._container.getInstance(UpdateStatusTransaksiUseCase.name);
+    switch (event) {
+      case 'update':
+        // update status
+        await updateStatusTransaksiUseCase.execute(post_data);
+        break;
 
-    const signatureValid = await validateSignatureDigiUseCase.execute(signature1, post_data2);
-    console.log(signatureValid);
+      default:
+        break;
+    }
+
     // console.log(signature);
 
     return h.response().code(200);
@@ -127,4 +134,5 @@ class ServicesHandler {
   //     return response;
   // }
 }
+
 module.exports = ServicesHandler;

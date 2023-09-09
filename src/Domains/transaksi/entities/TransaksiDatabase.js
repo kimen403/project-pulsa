@@ -4,6 +4,7 @@ class TransaksiDatabase {
     // Payload Yang Di Terima
     const {
       id, idUser, sku, customerRef, status,
+      harga,
     } = payload;
     this.id = id;
     this.idUser = idUser;
@@ -16,6 +17,7 @@ class TransaksiDatabase {
     // Payload Yang Di Terima
     const {
       id, idUser, sku, customerRef, status,
+      harga,
     } = payload;
 
     // veryfiy payload required

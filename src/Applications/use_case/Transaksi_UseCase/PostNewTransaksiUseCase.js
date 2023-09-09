@@ -67,7 +67,6 @@ class PostNewTransaksiUseCase {
     switch (responseServer.status.toLowerCase()) {
       case 'sukses':
         return 'sukses';
-
       case 'gagal':
         await this._userRepository.refundBalance(authUserId, hargaJual);
         return 'gagal';
