@@ -22,10 +22,10 @@ class TransaksiHandler {
 
     const createTransaksiUseCase = this._container.getInstance(PostNewTransaksiUseCase.name);
 
-    const addedTransaksi = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id);
+    const data = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id);
 
     const response = h.response({
-      addedTransaksi,
+      data,
     });
 
     response.code(201);
