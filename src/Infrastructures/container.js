@@ -96,6 +96,7 @@ const TransaksiRepository = require('../Domains/transaksi/TransaksiRepository');
 const TransaksiRepositoryPostgres = require('./repository/TransaksiRepositoryPostgres');
 const HashMd5 = require('../Applications/security/Md5PasswordHash');
 const CryptoHashMd5 = require('./security/CryptoHashMd5');
+const UpdateStatusTransaksiUseCase = require('../Applications/use_case/Transaksi_UseCase/UpdateStatusTransaksiUseCase');
 
 const container = createContainer();
 
@@ -645,6 +646,21 @@ container.register([
       ],
     },
   },
+  // UpdateStatusTransaksiUseCase
+  {
+    key: UpdateStatusTransaksiUseCase.name,
+    Class: UpdateStatusTransaksiUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'transaksiRepository',
+          internal: TransaksiRepository.name,
+        },
+      ],
+    },
+  },
+
 ]);
 
 module.exports = container;
