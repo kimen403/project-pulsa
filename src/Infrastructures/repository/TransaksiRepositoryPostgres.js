@@ -46,10 +46,10 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
 
   async updateStatusTransaksiFailed(updateData) {
     console.log('masuk update status transaksi', updateData);
-    const updatedat = new Date().toISOString();
+    const updatedat = new Date().toDateString();
     const queryUpdate = {
-      text: 'UPDATE transaksi SET status = $2, rc = $3, cs_telegram = $4, cs_wa = $5, sn = $6 WHERE id = $1',
-      values: [updateData.id, updateData.status, updateData.rc, updateData.cs_telegram, updateData.cs_wa, updateData.sn, updatedat],
+      text: 'UPDATE transaksi SET status = $2, rc = $3, cs_telegram = $4, cs_wa = $5, sn = $6 ,updated_at = $7, message =$8 WHERE id = $1',
+      values: [updateData.id, updateData.status, updateData.rc, updateData.cs_telegram, updateData.cs_wa, updateData.sn, updatedat, updateData.message],
     };
     await this._pool.query(queryUpdate);
     const hargaProduct = await this.cekHargaProduk(updateData.sku);

@@ -3,7 +3,7 @@ class UpdateDataCallback {
     this._verifyPayload(payload);
     // Payload Yang Di Terima
     const {
-      ref_id, status, message, rc, sn, tele, wa,
+      ref_id, status, message, rc, sn, tele, wa, buyer_sku_code,
     } = payload;
     this.id = ref_id;
     this.status = status;
@@ -12,6 +12,7 @@ class UpdateDataCallback {
     this.sn = sn;
     this.cs_telegram = tele;
     this.cs_wa = wa;
+    this.sku = buyer_sku_code;
   }
 
   _verifyPayload(payload) {
