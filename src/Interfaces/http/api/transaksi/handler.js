@@ -12,6 +12,7 @@ class TransaksiHandler {
 
     this.postTransaksiHandler = this.postTransaksiHandler.bind(this);
     this.getHistoryTopupHandler = this.getHistoryTopupHandler.bind(this);
+    this.getTransaksiHistoryUserHandler = this.getTransaksiHistoryUserHandler.bind(this);
   }
 
   async postTransaksiHandler(request, h) {
@@ -44,12 +45,13 @@ class TransaksiHandler {
 
   async getTransaksiHistoryUserHandler(request, h) {
     const userId = request.auth.credentials.id;
-    const getHistoryTopUpUseCase = this._container.getInstance(GetHistoryTransaksiByUserIdUseCase.name);
-    const historyTopUp = await getHistoryTopUpUseCase.execute(userId);
+    console.log('masuk get transaksi history user handler');
+    const getHistoryTransaksiUser = this._container.getInstance(GetHistoryTransaksiByUserIdUseCase.name);
+    const historyTransaksi = await getHistoryTransaksiUser.execute(userId);
 
     const response = h.response({
       status: 'success',
-      historyTopUp,
+      historyTransaksi,
     });
     response.code(200);
     return response;
