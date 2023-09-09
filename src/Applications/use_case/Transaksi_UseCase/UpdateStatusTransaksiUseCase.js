@@ -14,10 +14,12 @@ class UpdateStatusTransaksiUseCase {
   }
 
   async execute(useCasePayload) {
-    const newUpdateDataPayload = new UpdateDataCallback(useCasePayload);
-    console.log('newUpdateDataPayload', newUpdateDataPayload);
-    switch (newUpdateDataPayload.status.toUpperCase()) {
-      case 'success':
+    console.log(useCasePayload);
+    const newUpdateDataPayload = new UpdateDataCallback(useCasePayload.data);
+    console.log(newUpdateDataPayload.status.toLowerCase());
+    switch (newUpdateDataPayload.status.toLowerCase()) {
+      case 'sukses':
+        console.log('masuk update status transaksi', newUpdateDataPayload);
         await this._transaksiRepository.updateStatusTransaksiSukses(newUpdateDataPayload);
         break;
       case 'pending':

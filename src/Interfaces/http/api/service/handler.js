@@ -108,6 +108,7 @@ class ServicesHandler {
     switch (event) {
       case 'update':
         // update status
+        console.log('masuk update');
         await updateStatusTransaksiUseCase.execute(post_data);
         break;
 

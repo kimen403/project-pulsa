@@ -10,8 +10,8 @@ class UpdateDataCallback {
     this.message = message;
     this.rc = rc;
     this.sn = sn;
-    this.tele = tele;
-    this.wa = wa;
+    this.cs_telegram = tele;
+    this.cs_wa = wa;
   }
 
   _verifyPayload(payload) {
@@ -19,7 +19,7 @@ class UpdateDataCallback {
     const {
       ref_id, status, message, rc, sn, tele, wa,
     } = payload;
-
+    console.log(rc, sn, tele, wa);
     // veryfiy payload required
     if (!ref_id || !status || !message || !rc || !sn || !tele || !wa) {
       throw new Error('UPDATE_DATA_CALLBACK.NOT_CONTAIN_NEEDED_PROPERTY');
