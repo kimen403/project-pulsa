@@ -36,8 +36,8 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
       values: [idTransaksi],
     };
     const { rows } = await this._pool.query(query);
-    console.log(`cek saldo berhasil${rows[0]}`);
-    return rows[0];
+    console.log(`Get User Id ${rows[0].id_user}`);
+    return rows[0].id_user;
   }
 
   async updateStatusTransaksiSukses(updateData) {
@@ -62,7 +62,10 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
       text: 'UPDATE transaksi SET status = $2, rc = $3, cs_telegram = $4, cs_wa = $5, sn = $6 ,updated_at = $7, message =$8 WHERE id = $1',
       values: [updateData.id, updateData.status, updateData.rc, updateData.cs_telegram, updateData.cs_wa, updateData.sn, updatedat, updateData.message],
     };
+    // update status transaksi
     await this._pool.query(queryUpdate);
+
+    // refund saldo
     const hargaProduct = await this.cekHargaProduk(updateData.sku);
     console.log('harga product', hargaProduct);
     const idUser = await this.getUserIdByIdTransaksi(updateData.id);
