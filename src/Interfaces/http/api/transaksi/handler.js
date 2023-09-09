@@ -2,6 +2,7 @@
 // const DeleteCommentUseCase = require("../../../../Applications/use_case/CommentUseCase/DeleteCommentUseCase");
 
 const HistoryTopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/HistoryTopUpUseCase');
+const GetHistoryTransaksiByUserIdUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/GetHistoryTransaksiByUserIdUseCase');
 const PostNewTransaksiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
 const NewTransaksi = require('../../../../Domains/transaksi/entities/NewTransaksi');
 
@@ -31,6 +32,19 @@ class TransaksiHandler {
   async getHistoryTopupHandler(request, h) {
     const userId = request.auth.credentials.id;
     const getHistoryTopUpUseCase = this._container.getInstance(HistoryTopUpUseCase.name);
+    const historyTopUp = await getHistoryTopUpUseCase.execute(userId);
+
+    const response = h.response({
+      status: 'success',
+      historyTopUp,
+    });
+    response.code(200);
+    return response;
+  }
+
+  async getTransaksiHistoryUserHandler(request, h) {
+    const userId = request.auth.credentials.id;
+    const getHistoryTopUpUseCase = this._container.getInstance(GetHistoryTransaksiByUserIdUseCase.name);
     const historyTopUp = await getHistoryTopUpUseCase.execute(userId);
 
     const response = h.response({

@@ -9,6 +9,14 @@ const routes = (handler) => [
   },
   {
     method: 'GET',
+    path: '/history/transaksi',
+    handler: handler.getTransaksiHistoryUserHandler,
+    options: {
+      auth: 'pulsa_jwt',
+    },
+  },
+  {
+    method: 'GET',
     path: '/history/topup',
     handler: handler.getHistoryTopupHandler,
     options: {

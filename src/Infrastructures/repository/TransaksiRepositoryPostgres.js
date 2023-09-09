@@ -18,6 +18,15 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     await this._pool.query(query);
   }
 
+  async getHistoryTransaksiByIdUser(idUser) {
+    const query = {
+      text: 'SELECT id,sku,customer_ref,status FROM transaksi WHERE id_user = $1 ORDER BY created_at DESC',
+      values: [idUser],
+    };
+    const { rows } = await this._pool.query(query);
+    return rows;
+  }
+
   async updateStatusTransaksi(updateData) {
     console.log('masuk update status transaksi', updateData);
     const updatedat = new Date().toDateString();
