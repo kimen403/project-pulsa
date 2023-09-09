@@ -25,7 +25,7 @@ class TransaksiHandler {
     const addedTransaksi = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id);
 
     const response = h.response({
-      status: addedTransaksi,
+      addedTransaksi,
     });
 
     response.code(201);
