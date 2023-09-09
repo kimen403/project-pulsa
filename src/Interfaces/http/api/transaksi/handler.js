@@ -17,8 +17,7 @@ class TransaksiHandler {
     const usecasePayload = new NewTransaksi(request.payload);
 
     const createTransaksiUseCase = this._container.getInstance(PostNewTransaksiUseCase.name);
-    // console.log('usecasePayload', usecasePayload);
-    // console.log(createTransaksiUseCase);
+
     const addedTransaksi = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id);
 
     const response = h.response({

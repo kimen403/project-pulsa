@@ -63,11 +63,13 @@ class PostNewTransaksiUseCase {
 
     const responseServer = await this._digiRepository.createTransaksiToServer(newTransaksiEntity);
 
-    console.log(responseServer.status);
+    console.log(responseServer);
     switch (responseServer.status.toLowerCase()) {
       case 'sukses':
+        await this._transaksiRepository.updateTransaksi(id, responseServer);
         return 'sukses';
       case 'gagal':
+        await this._transaksiRepository.updateTransaksi(id, responseServer);
         await this._userRepository.refundBalance(authUserId, hargaJual);
         return 'gagal';
       case 'pending':
