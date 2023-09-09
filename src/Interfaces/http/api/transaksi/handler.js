@@ -3,6 +3,7 @@
 
 const HistoryTopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/HistoryTopUpUseCase');
 const GetHistoryTransaksiByUserIdUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/GetHistoryTransaksiByUserIdUseCase');
+const GetOneTransaksiHistoryUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/GetOneTransaksiHistoryUseCase');
 const PostNewTransaksiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
 const NewTransaksi = require('../../../../Domains/transaksi/entities/NewTransaksi');
 
@@ -13,6 +14,7 @@ class TransaksiHandler {
     this.postTransaksiHandler = this.postTransaksiHandler.bind(this);
     this.getHistoryTopupHandler = this.getHistoryTopupHandler.bind(this);
     this.getTransaksiHistoryUserHandler = this.getTransaksiHistoryUserHandler.bind(this);
+    this.getTransaksiHistoryUserByIdHandler = this.getTransaksiHistoryUserByIdHandler.bind(this);
   }
 
   async postTransaksiHandler(request, h) {
@@ -48,6 +50,21 @@ class TransaksiHandler {
     console.log('masuk get transaksi history user handler');
     const getHistoryTransaksiUser = this._container.getInstance(GetHistoryTransaksiByUserIdUseCase.name);
     const historyTransaksi = await getHistoryTransaksiUser.execute(userId);
+
+    const response = h.response({
+      status: 'success',
+      historyTransaksi,
+    });
+    response.code(200);
+    return response;
+  }
+
+  async getTransaksiHistoryUserByIdHandler(request, h) {
+    const userId = request.auth.credentials.id;
+    const idTransaksi = request.params.id;
+    console.log('masuk get transaksi history user handler');
+    const getOneTransaksiHistory = this._container.getInstance(GetOneTransaksiHistoryUseCase.name);
+    const historyTransaksi = await getOneTransaksiHistory.execute(userId, idTransaksi);
 
     const response = h.response({
       status: 'success',
