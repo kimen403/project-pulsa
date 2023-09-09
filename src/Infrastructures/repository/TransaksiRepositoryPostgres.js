@@ -18,6 +18,20 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     await this._pool.query(query);
   }
 
+  async updateStatusTransaksi(updateData) {
+    console.log('masuk update status transaksi', updateData);
+    const updatedat = new Date().toDateString();
+    const query = {
+      text: 'UPDATE transaksi SET status = $2, rc = $3, cs_telegram = $4, cs_wa = $5, sn = $6 ,updated_at = $7, message =$8 WHERE id = $1',
+      values: [updateData.id, updateData.status, updateData.rc, updateData.telegram, updateData.cs_wa, updateData.sn, updatedat, updateData.message],
+    };
+    try {
+      await this._pool.query(query);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async cekHargaProduk(sku) {
     console.log('masuk cek harga produk', sku);
     const query = {
@@ -42,7 +56,7 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
 
   async updateStatusTransaksiSukses(updateData) {
     console.log('masuk update status transaksi', updateData);
-    const updatedat = new Date().toDateString();
+    const updatedat = new Date().toISOString();
 
     const query = {
       text: 'UPDATE transaksi SET status = $2, rc = $3, cs_telegram = $4, cs_wa = $5, sn = $6 ,updated_at = $7, message =$8 WHERE id = $1',
@@ -57,7 +71,7 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
 
   async updateStatusTransaksiFailed(updateData) {
     console.log('masuk update status transaksi', updateData);
-    const updatedat = new Date().toDateString();
+    const updatedat = new Date().toISOString();
     const queryUpdate = {
       text: 'UPDATE transaksi SET status = $2, rc = $3, cs_telegram = $4, cs_wa = $5, sn = $6 ,updated_at = $7, message =$8 WHERE id = $1',
       values: [updateData.id, updateData.status, updateData.rc, updateData.cs_telegram, updateData.cs_wa, updateData.sn, updatedat, updateData.message],
@@ -66,6 +80,7 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     await this._pool.query(queryUpdate);
 
     // refund saldo
+    console.log('masuk refund saldo', updateData);
     const hargaProduct = await this.cekHargaProduk(updateData.sku);
     console.log('harga product', hargaProduct);
     const idUser = await this.getUserIdByIdTransaksi(updateData.id);

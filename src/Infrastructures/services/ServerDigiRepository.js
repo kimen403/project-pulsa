@@ -34,7 +34,7 @@ class DigiRepositoryServer
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error.response.data);

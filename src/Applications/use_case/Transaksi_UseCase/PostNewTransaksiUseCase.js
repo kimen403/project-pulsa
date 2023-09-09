@@ -4,6 +4,7 @@ const { nanoid } = require('nanoid');
 const NewTransaksi = require('../../../Domains/transaksi/entities/NewTransaksi');
 const PostTransaksiDigi = require('../../../Domains/transaksi/entities/PostTransaksiDigi');
 const TransaksiDatabase = require('../../../Domains/transaksi/entities/TransaksiDatabase');
+const UpdateDataCallback = require('../../../Domains/transaksi/entities/UpdateDataCallback');
 
 class PostNewTransaksiUseCase {
   // constructor akan menerima parameter yang dikirimkan oleh dependency injection
@@ -63,14 +64,17 @@ class PostNewTransaksiUseCase {
 
     const responseServer = await this._digiRepository.createTransaksiToServer(newTransaksiEntity);
 
-    console.log(responseServer);
-    switch (responseServer.status.toLowerCase()) {
+    console.log('responseServer', responseServer.data);
+    console.log(responseServer.data.status.toLowerCase());
+    const newUpdateDataPayload = new UpdateDataCallback(responseServer.data);
+    switch (responseServer.data.status.toLowerCase()) {
       case 'sukses':
-        await this._transaksiRepository.updateTransaksi(id, responseServer);
+        console.log('masuk update status transaksi', newUpdateDataPayload);
+        await this._transaksiRepository.updateStatusTransaksiSukses(newUpdateDataPayload);
         return 'sukses';
       case 'gagal':
-        await this._transaksiRepository.updateTransaksi(id, responseServer);
-        await this._userRepository.refundBalance(authUserId, hargaJual);
+        await this._transaksiRepository.updateStatusTransaksiFailed(newUpdateDataPayload);
+        // await this._userRepository.refundBalance(authUserId, hargaJual);
         return 'gagal';
       case 'pending':
         return 'pending';
