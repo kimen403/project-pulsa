@@ -71,7 +71,7 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     const idUser = await this.getUserIdByIdTransaksi(updateData.id);
     const queryRefund = {
       text: 'UPDATE users SET saldo = saldo + $2 WHERE id_user = $1',
-      values: [idUser, hargaProduct],
+      values: [idUser, hargaProduct * 1.1],
     };
     try {
       await this._pool.query(queryRefund);
