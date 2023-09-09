@@ -97,7 +97,9 @@ class ServicesHandler {
     const signature1 = request.headers['x-hub-signature'];
     const event = request.headers['x-digiflazz-event'].toLowerCase();
     console.log('masuk', event);
+
     const post_data = request.payload;
+    console.log('post_data', post_data);
     const post_data2 = JSON.stringify(post_data);
     // validate signature
     const validateSignatureDigiUseCase = this._container.getInstance(ValidateSignatureDigiUseCase.name);
