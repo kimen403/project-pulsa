@@ -34,8 +34,8 @@ class DigiRepositoryServer
           'Content-Type': 'application/json',
         },
       });
-      console.log(response.data);
-      return response.data.data;
+      console.log(response);
+      return response.data;
     } catch (error) {
       console.log(error.response.data);
       throw new InvariantError('Transaksi gagal ditambahkan');
