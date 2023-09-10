@@ -8,9 +8,6 @@ const UpdateDataCallback = require('../../../Domains/transaksi/entities/UpdateDa
 const ResponseTransaksi = require('../../../Domains/transaksi/entities/ResponseTransaksi');
 
 class PostNewTransaksiUseCase {
-  // constructor akan menerima parameter yang dikirimkan oleh dependency injection
-  // Parameter adalah kumpulan fungsi yang dibutuhkan oleh use case
-  // Contoh : commentRepository, threadRepository di butuhkan untuk menambahkan commentUseCase
   constructor({
     transaksiRepository, userRepository, idGenerator, hashGenerator, digiRepository,
   }) {
@@ -50,12 +47,14 @@ class PostNewTransaksiUseCase {
     await this._transaksiRepository.createTransaksi(transaksiDatabase);
 
     // membuat hash
+    console.log('apikey:', apiKey);
     const hash2 = (username + apiKey + id);
     console.log(hash2);
     const hash = await this._hashGenerator.hashMd5(hash2);
     // console.log('');
+    console.log(`hash${hash}`);
     const newTransaksiEntity = new PostTransaksiDigi({
-      username: process.env.DIGI_USERNAME,
+      username,
       sku: newTransaksi.sku,
       customerNumber: newTransaksi.customerRef,
       refId: id,

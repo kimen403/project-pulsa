@@ -11,7 +11,7 @@ class ProductsRepositoryPostgres extends ProductsRepository {
 
   async getAllProducts() {
     const query = {
-      text: 'SELECT * FROM products',
+      text: 'SELECT * FROM products WHERE seller_product_status = true AND buyer_product_status = true ORDER BY provider_id ASC',
     };
     const { rows } = await this._pool.query(query);
     return rows;
@@ -169,15 +169,15 @@ class ProductsRepositoryPostgres extends ProductsRepository {
 
       // console.log('ini test', value);
 
-      const cmd = `INSERT INTO products (id, product_name, category_id, provider_id, type, seller_name, price, buyer_sku_code, buyer_product_status, seller_product_status, unlimited_stock, stock, multi, start_cut_off, end_cut_off, "desc") 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`;
+      const cmd = `INSERT INTO products (id, product_name, category_id, provider_id, type, seller_name, base_price, buyer_sku_code, buyer_product_status, seller_product_status, unlimited_stock, stock, multi, start_cut_off, end_cut_off, "desc", v1_price,v2_price) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7::numeric, $8, $9, $10, $11, $12, $13, $14, $15, $16, ($7::numeric * 1.1), ($7::numeric * 1.2))`;
 
       value.forEach(async (val) => {
         // console.log('ini val', val);
         try {
           await this._pool.query(cmd, val);
         } catch (err) {
-          // console.error('error nih >>>>>', err);
+          console.error('error nih >>>>>', err);
         }
       });
 
