@@ -4,6 +4,14 @@ const routes = (handler) => ([
     path: '/users',
     handler: handler.postUserHandler,
   },
+  {
+    method: 'GET',
+    path: '/me',
+    handler: handler.getUserByIdHandler,
+    options: {
+      auth: 'pulsa_jwt',
+    },
+  },
 ]);
 
 module.exports = routes;

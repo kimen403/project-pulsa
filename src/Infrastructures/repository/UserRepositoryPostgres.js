@@ -162,6 +162,18 @@ class UserRepositoryPostgres extends UserRepository {
       console.error('Error updating saldo:', error);
     }
   }
+
+  async getUserById(userId) {
+    const query = {
+      text: 'SELECT id_user AS id,fullname,username,email,role,saldo FROM users WHERE id_user = $1',
+      values: [userId],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new InvariantError('user tidak ditemukan');
+    }
+    return result.rows[0];
+  }
 }
 
 module.exports = UserRepositoryPostgres;
