@@ -22,8 +22,9 @@ class TopUpRepositoryPostgres extends TopUpRepository {
   }
 
   async updateStatus(orderId, status) {
+    const updatedat = new Date().toISOString();
     const query = {
-      text: 'UPDATE history_topup SET status = $1 WHERE id = $2 RETURNING id, status',
+      text: 'UPDATE history_topup SET status = $1 , updated_at =$3 WHERE id = $2 RETURNING id, status',
       values: [status, orderId],
     };
     try {
@@ -56,9 +57,7 @@ class TopUpRepositoryPostgres extends TopUpRepository {
     };
 
     const result = await this._pool.query(query);
-    if (!result.rows.length) {
-      throw new InvariantError('Gagal update status');
-    }
+
     return result.rows;
   }
 }
