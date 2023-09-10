@@ -9,7 +9,7 @@ class UpdateStatusTransaksiUseCase {
   // constructor akan menerima parameter yang dikirimkan oleh dependency injection
   // Parameter adalah kumpulan fungsi yang dibutuhkan oleh use case
   // Contoh : commentRepository, threadRepository di butuhkan untuk menambahkan commentUseCase
-  constructor({ transaksiRepository, threadRepository }) {
+  constructor({ transaksiRepository }) {
     this._transaksiRepository = transaksiRepository;
   }
 

@@ -18,13 +18,28 @@ class PostNewTransaksiUseCase {
     this._digiRepository = digiRepository;
   }
 
-  async execute(useCasePayload, authUserId) {
+  async execute(useCasePayload, authUserId, role) {
     const newTransaksi = new NewTransaksi(useCasePayload);
     // cek harga produk
-    const hargaProduk = await this._transaksiRepository.cekHargaProduk(newTransaksi.sku);
+
+    let hargaProduk;
+
+    switch (role) {
+      case 'USER':
+        hargaProduk = await this._transaksiRepository.cekHargaProdukUser(newTransaksi.sku);
+        break;
+      case 'VIP':
+        hargaProduk = await this._transaksiRepository.cekHargaProdukVip(newTransaksi.sku);
+        break;
+      default:
+        throw new Error('Invalid role');
+    }
+
+    // Continue with the rest of the code...
+
     // naikin harga
     console.log(`harga jual${hargaProduk}`);
-    const hargaJual = hargaProduk + hargaProduk * 0.1;
+    const hargaJual = hargaProduk;
     // cek Saldo User
     await this._userRepository.cekSaldo(authUserId, hargaJual);
     // membuatId

@@ -61,6 +61,28 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     return rows[0].price;
   }
 
+  async cekHargaProdukUser(sku) {
+    console.log('masuk cek harga produk', sku);
+    const query = {
+      text: 'SELECT v2_price FROM products WHERE "buyer_sku_code" = $1',
+      values: [sku],
+    };
+    const { rows } = await this._pool.query(query);
+    console.log(`cek saldo berhasil${rows[0].v1_price}`);
+    return rows[0].v2_price;
+  }
+
+  async cekHargaProdukVip(sku) {
+    console.log('masuk cek harga produk', sku);
+    const query = {
+      text: 'SELECT v1_price FROM products WHERE "buyer_sku_code" = $1',
+      values: [sku],
+    };
+    const { rows } = await this._pool.query(query);
+    console.log(`cek saldo berhasil${rows[0].v1_price}`);
+    return rows[0].v1_price;
+  }
+
   async getUserIdByIdTransaksi(idTransaksi) {
     console.log('masuk get user id by id transaksi', idTransaksi);
     const query = {
@@ -98,19 +120,42 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     await this._pool.query(queryUpdate);
 
     // refund saldo
-    console.log('masuk refund saldo', updateData);
-    const hargaProduct = await this.cekHargaProduk(updateData.sku);
-    console.log('harga product', hargaProduct);
+    let hargaProduct;
     const idUser = await this.getUserIdByIdTransaksi(updateData.id);
+    const role = await this.cekRoleUser(idUser);
+    switch (role) {
+      case 'USER':
+        hargaProduct = await this.cekHargaProdukUser(updateData.sku);
+        break;
+      case 'VIP':
+        hargaProduct = await this.cekHargaProdukVip(updateData.sku);
+        break;
+      default:
+        break;
+    }
+
+    console.log('masuk refund saldo', updateData);
+    console.log('harga product', hargaProduct);
     const queryRefund = {
       text: 'UPDATE users SET saldo = saldo + $2 WHERE id_user = $1',
-      values: [idUser, hargaProduct * 1.1],
+      values: [idUser, hargaProduct],
     };
     try {
       await this._pool.query(queryRefund);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async cekRoleUser(idUser) {
+    console.log('masuk cek role user', idUser);
+    const query = {
+      text: 'SELECT role FROM users WHERE id_user = $1',
+      values: [idUser],
+    };
+    const { rows } = await this._pool.query(query);
+    console.log(`Get User Id ${rows[0].role}`);
+    return rows[0].role;
   }
 }
 
