@@ -52,7 +52,7 @@ class TopUpRepositoryPostgres extends TopUpRepository {
 
   async getHistoryTopUpByUserId(userId) {
     const query = {
-      text: 'SELECT * FROM history_topup WHERE id_user = $1',
+      text: 'SELECT * FROM history_topup WHERE id_user = $1 ORDER BY created_at DESC',
       values: [userId],
     };
 
