@@ -25,7 +25,7 @@ class TopUpRepositoryPostgres extends TopUpRepository {
     const updatedat = new Date().toISOString();
     const query = {
       text: 'UPDATE history_topup SET status = $1 , updated_at =$3 WHERE id = $2 RETURNING id, status',
-      values: [status, orderId],
+      values: [status, orderId, updatedat],
     };
     try {
       const result = await this._pool.query(query);
