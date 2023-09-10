@@ -21,7 +21,7 @@ class PostNewTransaksiUseCase {
   async execute(useCasePayload, authUserId, role) {
     const newTransaksi = new NewTransaksi(useCasePayload);
     // cek harga produk
-
+    console.log('masuk usecase post new transaksi', newTransaksi);
     let hargaProduk;
 
     switch (role) {
