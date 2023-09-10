@@ -100,6 +100,7 @@ class PostNewTransaksiUseCase {
           message: 'Transaksi Gagal',
         });
       case 'pending':
+        await this._transaksiRepository.updateStatusTransaksi(newUpdateDataPayload);
         return new ResponseTransaksi({
           id: newUpdateDataPayload.id,
           status: 'pending',
