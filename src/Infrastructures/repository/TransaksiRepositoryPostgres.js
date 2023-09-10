@@ -68,7 +68,7 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
       values: [sku],
     };
     const { rows } = await this._pool.query(query);
-    console.log(`cek saldo berhasil${rows[0].v1_price}`);
+    console.log(`cek saldo berhasil${rows[0].v2_price}`);
     return rows[0].v2_price;
   }
 
