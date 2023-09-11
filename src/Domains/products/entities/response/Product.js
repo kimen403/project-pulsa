@@ -10,6 +10,7 @@ class Product {
       category_id,
       provider_id,
       buyer_sku_code,
+      form_type,
       desc,
     } = payload;
     this.id = id;
@@ -19,6 +20,7 @@ class Product {
     this.category = category_id;
     this.provider = provider_id;
     this.code = buyer_sku_code;
+    this.form_type = form_type;
     this.desc = desc;
   }
 
