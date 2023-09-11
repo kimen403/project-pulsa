@@ -20,12 +20,6 @@ const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRep
 // userRepository
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
-// commentRepository
-const CommentRepository = require('./repository/CommentRepositoryPostgres');
-const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
-// threadRepository
-const ThreadRepository = require('./repository/ThreadRespositoryPostgres');
-const ThreadRepositoryPostgres = require('./repository/ThreadRespositoryPostgres');
 
 // midtransRepository
 const MidtransRepository = require('../Domains/midtrans/MidtransRepository');
@@ -54,13 +48,6 @@ const RefreshAuthenticationUseCase = require('../Applications/use_case/Auth_UseC
 const AddUserUseCase = require('../Applications/use_case/UserUseCase/AddUserUseCase');
 const LoginUserUseCase = require('../Applications/use_case/UserUseCase/LoginUserUseCase');
 const LogoutUserUseCase = require('../Applications/use_case/UserUseCase/LogoutUserUseCase');
-// threadUseCase
-const AddThreadUseCase = require('../Applications/use_case/ThreadUseCase/AddThreadUseCase');
-const GetDetailThreadByIdUseCase = require('../Applications/use_case/ThreadUseCase/GetDetailThreadByIdUseCase');
-
-// commentUseCase
-const AddCommentUseCase = require('../Applications/use_case/CommentUseCase/AddCommentUseCase');
-const DeleteCommentUseCase = require('../Applications/use_case/CommentUseCase/DeleteCommentUseCase');
 
 // Services Digi
 const GetProductsServer = require('./services/ServerDigiRepository');
@@ -251,36 +238,6 @@ container.register([
       dependencies: [
         {
           concrete: Jwt.token,
-        },
-      ],
-    },
-  },
-  // threadRepository
-  {
-    key: ThreadRepository.name,
-    Class: ThreadRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool,
-        },
-        {
-          concrete: nanoid,
-        },
-      ],
-    },
-  },
-  // commentRepository
-  {
-    key: CommentRepository.name,
-    Class: CommentRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool,
-        },
-        {
-          concrete: nanoid,
         },
       ],
     },
@@ -516,70 +473,7 @@ container.register([
       ],
     },
   },
-  // addThreadUseCase
-  {
-    key: AddThreadUseCase.name,
-    Class: AddThreadUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-      ],
-    },
-  },
-  // getThreadUseCase
-  {
-    key: GetDetailThreadByIdUseCase.name,
-    Class: GetDetailThreadByIdUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-      ],
-    },
-  },
-  // addCommentUseCase
-  {
-    key: AddCommentUseCase.name,
-    Class: AddCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-      ],
-    },
-  },
-  // deleteCommentUseCase
-  {
-    key: DeleteCommentUseCase.name,
-    Class: DeleteCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-      ],
-    },
-  },
+
   // updateProductsServerUseCase
   {
     key: UpdateProductsServerUseCase.name,
