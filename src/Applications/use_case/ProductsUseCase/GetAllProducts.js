@@ -16,8 +16,8 @@ class GetAllProductsUseCase {
 
   async execute() {
     const products = await this._productsRepository.getAllProducts();
-    const productsData = products.map((product) => new Product(product));
-    return productsData;
+
+    return products;
   }
 }
 

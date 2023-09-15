@@ -36,7 +36,12 @@ const routes = (handler) => [
       },
     },
   },
+  {
+    method: 'GET',
+    path: '/server/products',
+    handler: handler.getAllServerProductsHandler,
 
+  },
   // {
   //     method: 'DELETE',
   //     path: '/threads/{threadId}/comments/{commentId}',

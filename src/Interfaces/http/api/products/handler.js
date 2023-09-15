@@ -5,6 +5,8 @@ const GetAllProvidersByCategoryUseCase = require('../../../../Applications/use_c
 const GetBannerUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetBannerUseCase');
 const GetProductsByProviderUseCase = require('../../../../Applications/use_case/ProductsUseCase/GetProductsByProvider');
 const UploadBannerUseCase = require('../../../../Applications/use_case/ServerAdminUseCase/UploadBannerUseCase');
+const Product = require('../../../../Domains/products/entities/response/Product');
+const ServerProduct = require('../../../../Domains/products/entities/response/ServerProducts');
 
 class ProductsHandler {
   constructor(container) {
@@ -17,6 +19,22 @@ class ProductsHandler {
     this.getAllProductsByProviderHandler = this.getAllProductsByProviderHandler.bind(this);
     this.getBannerHandler = this.getBannerHandler.bind(this);
     this.postBannerHandler = this.postBannerHandler.bind(this);
+    this.getAllServerProductsHandler = this.getAllServerProductsHandler.bind(this);
+  }
+
+  // NOTE SERVER
+  async getAllServerProductsHandler(request, h) {
+    const getAllProductsUseCase = this._container.getInstance(
+      GetAllProductsUseCase.name,
+    );
+    const result = await getAllProductsUseCase.execute();
+    const products = result.map((product) => new ServerProduct(product));
+    const response = h.response({
+      status: 'success',
+      products,
+    });
+    response.code(200);
+    return response;
   }
 
   async getAllProductsHandler(request, h) {
@@ -24,9 +42,10 @@ class ProductsHandler {
       GetAllProductsUseCase.name,
     );
     const products = await getAllProductsUseCase.execute();
+    const productsData = products.map((product) => new Product(product));
     const response = h.response({
       status: 'success',
-      products,
+      productsData,
     });
     response.code(200);
     return response;
