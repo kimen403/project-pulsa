@@ -1,5 +1,6 @@
 const UserLogin = require('../../../Domains/users/entities/UserLogin');
 const NewAuthentication = require('../../../Domains/authentications/entities/NewAuth');
+const AdminLogin = require('../../../Domains/authentications/entities/AdminLogin');
 
 class LoginUserUseCase {
   constructor({
@@ -14,7 +15,7 @@ class LoginUserUseCase {
     this._passwordHash = passwordHash;
   }
 
-  async execute(useCasePayload) {
+  async execute(useCasePayload, server = false) {
     const { username, password } = new UserLogin(useCasePayload);
     const encryptedPassword = await this._userRepository.getPasswordByUsername(username);
 
@@ -31,7 +32,11 @@ class LoginUserUseCase {
     //   accessToken, refreshToken, role, saldoString,
     // };
     console.log({ ...profile });
-    const newAuthentication = new NewAuthentication({
+    const newAuthentication = server ? new AdminLogin(
+      {
+        accessToken, refreshToken, ...profile,
+      },
+    ) : new NewAuthentication({
       accessToken, refreshToken, ...profile,
     });
     // console.log('newAuthentication');

@@ -157,6 +157,14 @@ class TransaksiRepositoryPostgres extends TransaksiRepository {
     console.log(`Get User Id ${rows[0].role}`);
     return rows[0].role;
   }
+
+  async getAllTransaksi() {
+    const query = {
+      text: 'SELECT * FROM transaksi ORDER BY created_at DESC',
+    };
+    const { rows } = await this._pool.query(query);
+    return rows;
+  }
 }
 
 module.exports = TransaksiRepositoryPostgres;

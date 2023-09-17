@@ -25,6 +25,19 @@ class AuthenticationsHandler {
     return response;
   }
 
+  async postAuthenticationServerHandler(request, h) {
+    const loginUserUseCase = this._container.getInstance(LoginUserUseCase.name);
+    const profile = await loginUserUseCase.execute(request.payload, true);
+    const response = h.response({
+      status: 'success',
+      data: {
+        ...profile,
+      },
+    });
+    response.code(201);
+    return response;
+  }
+
   async putAuthenticationHandler(request) {
     const refreshAuthenticationUseCase = this._container.getInstance(
       RefreshAuthenticationUseCase.name,

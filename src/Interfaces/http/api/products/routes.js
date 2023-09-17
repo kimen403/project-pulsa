@@ -25,6 +25,11 @@ const routes = (handler) => [
     handler: handler.getBannerHandler,
   },
   {
+    method: 'GET',
+    path: '/server/banner',
+    handler: handler.getBannerHandler,
+  },
+  {
     method: 'POST',
     path: '/banner',
     handler: handler.postBannerHandler,
@@ -40,7 +45,14 @@ const routes = (handler) => [
     method: 'GET',
     path: '/server/products',
     handler: handler.getAllServerProductsHandler,
-
+    options: {
+      auth: 'pulsa_jwt',
+      plugins: {
+        hacli: {
+          permissions: ['ADMIN'],
+        },
+      },
+    },
   },
   // {
   //     method: 'DELETE',

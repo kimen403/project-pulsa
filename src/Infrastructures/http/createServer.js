@@ -54,7 +54,7 @@ const createServer = async (container) => {
       isValid: true,
       credentials: {
         id: artifacts.decoded.payload.id,
-        role: artifacts.decoded.payload.role,
+        permissions: artifacts.decoded.payload.role,
       },
     }),
   });

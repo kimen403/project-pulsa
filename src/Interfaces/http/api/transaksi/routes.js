@@ -15,6 +15,20 @@ const routes = (handler) => [
       auth: 'pulsa_jwt',
     },
   },
+
+  {
+    method: 'GET',
+    path: '/server/history/transaksi',
+    handler: handler.getTransaksiHistoryServerHandler,
+    options: {
+      auth: 'pulsa_jwt',
+      plugins: {
+        hacli: {
+          permissions: ['ADMIN'],
+        },
+      },
+    },
+  },
   {
     method: 'GET',
     path: '/history/transaksi/{id}',

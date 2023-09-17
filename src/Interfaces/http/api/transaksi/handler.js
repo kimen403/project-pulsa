@@ -1,10 +1,8 @@
-// const AddCommentUseCase = require("../../../../Applications/use_case/CommentUseCase/AddCommentUseCase");
-// const DeleteCommentUseCase = require("../../../../Applications/use_case/CommentUseCase/DeleteCommentUseCase");
-
 const HistoryTopUpUseCase = require('../../../../Applications/use_case/TopUpUseCase/HistoryTopUpUseCase');
 const GetHistoryTransaksiByUserIdUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/GetHistoryTransaksiByUserIdUseCase');
 const GetOneTransaksiHistoryUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/GetOneTransaksiHistoryUseCase');
 const PostNewTransaksiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/PostNewTransaksiUseCase');
+const ServerGetAllTransaksiUseCase = require('../../../../Applications/use_case/Transaksi_UseCase/ServerGetAllTransaksiUseCase');
 const NewTransaksi = require('../../../../Domains/transaksi/entities/NewTransaksi');
 
 class TransaksiHandler {
@@ -15,6 +13,7 @@ class TransaksiHandler {
     this.getHistoryTopupHandler = this.getHistoryTopupHandler.bind(this);
     this.getTransaksiHistoryUserHandler = this.getTransaksiHistoryUserHandler.bind(this);
     this.getTransaksiHistoryUserByIdHandler = this.getTransaksiHistoryUserByIdHandler.bind(this);
+    this.getTransaksiHistoryServerHandler = this.getTransaksiHistoryServerHandler.bind(this);
   }
 
   async postTransaksiHandler(request, h) {
@@ -22,7 +21,7 @@ class TransaksiHandler {
 
     const createTransaksiUseCase = this._container.getInstance(PostNewTransaksiUseCase.name);
 
-    const data = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id, request.auth.credentials.role);
+    const data = await createTransaksiUseCase.execute(usecasePayload, request.auth.credentials.id, request.auth.credentials.permissions);
 
     const response = h.response({
       data,
@@ -56,6 +55,21 @@ class TransaksiHandler {
       historyTransaksi,
     });
     response.code(200);
+    return response;
+  }
+
+  async getTransaksiHistoryServerHandler(request, h) {
+    console.log('masuk get transaksi history user handler');
+    const getHistoryTransaksiSever = this._container.getInstance(ServerGetAllTransaksiUseCase.name);
+    const historyTransaksi = await getHistoryTransaksiSever.execute();
+    const date = new Date();
+    console.log('date', date);
+    const response = h.response({
+      status: 'success',
+      historyTransaksi,
+    });
+    response.code(200);
+    // console.log('response', historyTransaksi);
     return response;
   }
 

@@ -87,6 +87,7 @@ const UpdateStatusTransaksiUseCase = require('../Applications/use_case/Transaksi
 const GetHistoryTransaksiByUserIdUseCase = require('../Applications/use_case/Transaksi_UseCase/GetHistoryTransaksiByUserIdUseCase');
 const GetOneTransaksiHistoryUseCase = require('../Applications/use_case/Transaksi_UseCase/GetOneTransaksiHistoryUseCase');
 const FindUserByIdUseCase = require('../Applications/use_case/UserUseCase/FindUserByIdUseCase');
+const ServerGetAllTransaksiUseCase = require('../Applications/use_case/Transaksi_UseCase/ServerGetAllTransaksiUseCase');
 
 const container = createContainer();
 
@@ -246,6 +247,20 @@ container.register([
 
 // registering use cases
 container.register([
+  // ServerGetAllTransaksiUseCase
+  {
+    key: ServerGetAllTransaksiUseCase.name,
+    Class: ServerGetAllTransaksiUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'transaksiRepository',
+          internal: TransaksiRepository.name,
+        },
+      ],
+    },
+  },
   // CallbackUseCase
   {
     key: CallBackUseCase.name,
